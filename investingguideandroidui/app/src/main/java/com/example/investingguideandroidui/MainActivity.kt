@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             var rp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
             rp.topMargin = bh * no
             cv.layoutParams =  rp
+
             cv.id = currentViewId
             //rv.setPadding(0, 10, 0, 0)
 
