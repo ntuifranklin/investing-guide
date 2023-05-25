@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/view_securities_button"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="1in"
         android:backgroundTint="@color/financial_green_200"
         android:gravity="center"
         android:text="View Current Treasury Security Auctions"
