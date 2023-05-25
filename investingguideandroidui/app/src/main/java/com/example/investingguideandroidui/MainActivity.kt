@@ -60,9 +60,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         startDate  = date.minus(daysDifference).toString()
         endDate = date.plus(daysDifference).toString()
         Log.w(LOG_TAG, startDate + " : " + endDate)
-        // get screen width and height
 
-        // get button
         viewSecurities = findViewById<Button>(R.id.view_securities_button)
         viewSecurities.setOnClickListener(this)
 
@@ -99,64 +97,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             cv.id = currentViewId
             //rv.setPadding(0, 10, 0, 0)
 
-            /*
-            var im : ImageView = ImageView(this)
-
-            var st : String = s.getSecurityType()
-            if (st == "Bill")
-                im.setImageResource(R.drawable.bill)
-            else if ( st == "Bond")
-                im.setImageResource(R.drawable.bond)
-            else if ( st == "Note")
-                im.setImageResource(R.drawable.note)
-            else
-                im.setImageResource(R.drawable.resource_default)
-            cv.addView(im)
-             */
-            //Log.w(LOG_TAG, "object obtained : "+s.getJsonRawObject())
-
-            var cusip : TextView = TextView(this)
-            cusip.setText("CUSIP : " + s.getCusip())
-            var cusipRL :  RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw,bh)
-            cusipRL.topMargin = top
-
-            cv.addView(cusip,cusipRL)
-            var securityType : TextView = TextView(this)
-            securityType.setText("Security Type : " + s.getSecurityType())
-
-            var secRL : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw,bh)
-            top += increment
-            secRL.topMargin = top
-            cv.addView(securityType, secRL)
-
-            var issueDateView : TextView = TextView(this)
-            issueDateView.id = View.generateViewId()
-            issueDateView.setText("Date Issued : " + s.getIssueDate())
-            var tempRL : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
-            tempRL.addRule(RelativeLayout.BELOW, securityType.id)
-            top += increment
-            tempRL.topMargin = top
-            cv.addView(issueDateView, tempRL)
-
-
-
             var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
             lparams.leftMargin = leftMargin
-            lparams.topMargin = 30
-            lparams.bottomMargin = 30
-
+            lparams.topMargin = 20
 
 
             no += 1
             if (previousViewId != 0 ) {
                 lparams.addRule(RelativeLayout.BELOW, previousViewId)
             }
-
-
-            cv.radius = 15f
-            cv.preventCornerOverlap = true
-            cv.cardElevation = 18f
-            cv.useCompatPadding = true
 
             var l : View = LayoutInflater.from(this).inflate(R.layout.security_card_view, null)
 
