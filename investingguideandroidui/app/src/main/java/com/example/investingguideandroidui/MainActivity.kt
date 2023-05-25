@@ -53,11 +53,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bh = (screenHeight/16).toInt()
         // set button width at start
 
-        daysDifference = Period.of(0, 0, 8)
+        daysDifference = Period.of(0, 0, 14)
         formatter = SimpleDateFormat("yyyy-MM-dd")
         var currentDate: Date = Date()
         date = LocalDate.of(currentDate.year, currentDate.month, currentDate.day)
-        startDate  = date.minus(daysDifference).toString()
+        startDate  = date.toString()
         endDate = date.plus(daysDifference).toString()
         Log.w(LOG_TAG, startDate + " : " + endDate)
 

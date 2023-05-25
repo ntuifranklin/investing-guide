@@ -7,10 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/view_securities_button"
-        android:layout_width="match_parent"
-        android:layout_height="1in"
+        android:layout_width="wrap_content"
+        android:layout_height="250px"
+        app:cornerRadius="8dp"
         android:backgroundTint="@color/financial_green_200"
         android:gravity="center"
         android:text="View Current Treasury Security Auctions"
@@ -21,6 +22,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="12pt"
+        android:textColor="@color/black"
+
          />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
