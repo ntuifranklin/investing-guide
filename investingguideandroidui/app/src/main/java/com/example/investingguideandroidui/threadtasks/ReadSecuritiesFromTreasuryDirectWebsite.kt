@@ -1,5 +1,8 @@
 package com.example.investingguideandroidui.threadtasks
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.models.Security
 import org.json.JSONArray
@@ -25,23 +28,44 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
         super.run()
         var displayTask : DisplayListOfSecurities = DisplayListOfSecurities()
 
-        var tempUrl : String = MainActivity.BASE_URL
+        var tempUrl : String = fromActivity.BASE_URL
         tempUrl += "?"
-        tempUrl += "format=" + MainActivity.format
+        tempUrl += "format=" + fromActivity.format
         //tempUrl += "&securityType=" + MainActivity.securityType
-        tempUrl += "&startDate=" + MainActivity.startDate
-        tempUrl += "&endDate=" + MainActivity.endDate
-        tempUrl += "&dateFieldName=" + MainActivity.dateFieldName
+        tempUrl += "&startDate=" + fromActivity.startDate
+        tempUrl += "&endDate=" + fromActivity.endDate
+        tempUrl += "&dateFieldName=" + fromActivity.dateFieldName
         val webUrl : String = tempUrl
         // get data from server
         try {
 
-            val urlObject : URL = URL(webUrl)
-            val inputStream: InputStream = urlObject.openStream()
-            val scan: Scanner = Scanner(inputStream)
+            Log.w(fromActivity.LOG_TAG,webUrl)
+
+            var pref : SharedPreferences = fromActivity.getSharedPreferences(fromActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
+            var oldWebResult : String?
+            oldWebResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"")
             var webResult : String = ""
-            while (scan.hasNext())
-                webResult += scan.nextLine()
+            if ( oldWebResult == null || oldWebResult.length == 0 ) {
+                Log.w(fromActivity.LOG_TAG,"No previous result saved. Getting fresh data")
+                val urlObject : URL = URL(webUrl)
+                val inputStream: InputStream = urlObject.openStream()
+                val scan: Scanner = Scanner(inputStream)
+
+                while (scan.hasNext())
+                    webResult += scan.nextLine()
+                var editor : SharedPreferences.Editor = pref.edit()
+
+
+                editor.putString(MainActivity.SAVED_WEB_RESULT_KEY, webResult)
+                editor.commit()
+
+                inputStream.close()
+            } else {
+                webResult = oldWebResult
+                Log.w(fromActivity.LOG_TAG,"Reusing prevuious data : " + webResult.substring(0,20))
+            }
+
+
 
             // Now we read the objects in the result and load them as Securities
             var jsonArray : JSONArray  = JSONArray(webResult)
@@ -57,10 +81,6 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
                 security.setSecurityType(securityObject.getString("securityType"))
                 securities.add(security)
             }
-
-
-
-
 
 
         } catch ( e: JSONException) {

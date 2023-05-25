@@ -13,6 +13,13 @@ import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.threadtasks.ReadSecuritiesFromTreasuryDirectWebsite
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewSecurities : Button
@@ -21,9 +28,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var screenWidth : Int = 0
     private var bh : Int = 0
     private var bw : Int = 0
+
+    lateinit var startDate : String
+    lateinit var endDate : String
+    lateinit var formatter : SimpleDateFormat
+    lateinit var fourDays : Period
+    lateinit var date : LocalDate
+    val BASE_URL : String = "https://www.treasurydirect.gov/TA_WS/securities/auctioned"
+    val format : String = "json"
+    val dateFieldName : String = "issueDate"
+    val securityType : String = "Bill"
+    val LOG_TAG : String = "Investingguide"
+    var APP_UNIQUE_ID : String = "cbhsuisnzdfui2378348347647641edsjhsh"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        fourDays = Period.of(0, 0, 4)
+        formatter = SimpleDateFormat("yyyy-MM-dd")
+        var currentDate: Date = Date()
+        date = LocalDate.of(currentDate.year, currentDate.month, currentDate.day)
+        startDate  = date.minus(fourDays).toString()
+        endDate = date.plus(fourDays).toString()
+        Log.w(LOG_TAG, startDate + " : " + endDate)
         // get screen width and height
 
         screenWidth = Resources.getSystem( ).displayMetrics.widthPixels
@@ -166,14 +194,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     companion object {
+        /*
+        *
+        * */
         // const val url : String = "https://www.treasurydirect.gov/TA_WS/securities/search?format=json&startDate=2023-05-10&endDate=2023-05-23&dateFieldName=issueDate"
-        const val BASE_URL : String = "https://www.treasurydirect.gov/TA_WS/securities/search"
-        const val format : String = "json"
-        const val startDate : String = "2023-05-01"
-        const val endDate : String = "2023-05-23"
-        const val dateFieldName : String = "issueDate"
-        const val securityType : String = "Bill"
-        const val LOG_TAG : String = "Investingguide"
+        //const val auction_url : String = "https://www.treasurydirect.gov/TA_WS/securities/auctioned?format=json&startDate=2023-05-21&endDate=2023-05-29"
+        const val SAVED_WEB_RESULT_KEY : String = "SAVED_WEB_RESULT"
     }
 
 }
