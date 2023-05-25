@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
@@ -120,7 +121,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
             lparams.leftMargin = leftMargin
-            lparams.topMargin = 2
+            lparams.topMargin = 15
+
 
 
             no += 1
@@ -129,12 +131,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
 
-            cv.setRadius(15f)
+            cv.radius = 15f
             cv.preventCornerOverlap = true
             cv.cardElevation = 18f
             cv.useCompatPadding = true
 
-            rl.addView(cv, lparams)
+            var l : View = LayoutInflater.from(this).inflate(R.layout.security_card_view, null)
+
+            l.id = currentViewId
+            var cusipView : TextView = l.findViewById<TextView>(R.id.cusip)
+            //cusipView.id = View.generateViewId()
+            cusipView.setText("CUSIP : " + s.getCusip())
+            var issueDate : TextView  = l.findViewById<TextView>(R.id.issueDate)
+            issueDate.setText("Issue Date : " + s.getIssueDate())
+
+            rl.addView(l, lparams)
 
             previousViewId = currentViewId
         }
