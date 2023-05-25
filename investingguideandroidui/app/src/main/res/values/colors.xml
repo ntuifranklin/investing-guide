@@ -10,9 +10,9 @@
     <color name="card_background_color">#91DDF7</color>
     <color name="grey_300">#E0E0E0</color>
     <color name="color_white">#FEFEFE</color>
-    <color name="financial_green_200">#0C9811</color>
-    <color name="financial_green_500">#035C06</color>
-    <color name="financial_green_700">#024904</color>
+    <color name="financial_green_200">#4DC491</color>
+    <color name="financial_green_500">#388F6A</color>
+    <color name="financial_green_700">#21553F</color>
 </resources>
 
 

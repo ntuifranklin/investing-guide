@@ -43,7 +43,7 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
 
             var pref : SharedPreferences = fromActivity.getSharedPreferences(fromActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
             var editor : SharedPreferences.Editor = pref.edit()
-            //editor.clear()
+            editor.clear()
             var oldWebResult : String?
             oldWebResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"")
             var webResult : String = ""

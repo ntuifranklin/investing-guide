@@ -1,5 +1,10 @@
 # investing-guide
+
+## version 1   
 <img src="./imgs/a.gif">  
+
+## version 2  
+<img src="./imgs/ab.gif">
 
 Android app that helps see what treasury security bills are available for sale.  
 It shows the different securities and the following fields :  
