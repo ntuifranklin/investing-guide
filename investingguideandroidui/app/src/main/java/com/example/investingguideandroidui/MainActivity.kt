@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var startDate : String
     lateinit var endDate : String
     lateinit var formatter : SimpleDateFormat
-    lateinit var fourDays : Period
+    lateinit var daysDifference : Period
     lateinit var date : LocalDate
     val BASE_URL : String = "https://www.treasurydirect.gov/TA_WS/securities/auctioned"
     val format : String = "json"
@@ -44,24 +44,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        fourDays = Period.of(0, 0, 4)
-        formatter = SimpleDateFormat("yyyy-MM-dd")
-        var currentDate: Date = Date()
-        date = LocalDate.of(currentDate.year, currentDate.month, currentDate.day)
-        startDate  = date.minus(fourDays).toString()
-        endDate = date.plus(fourDays).toString()
-        Log.w(LOG_TAG, startDate + " : " + endDate)
-        // get screen width and height
-
+        // set width and height of screen
         screenWidth = Resources.getSystem( ).displayMetrics.widthPixels
         screenHeight = Resources.getSystem( ).displayMetrics.heightPixels
 
         // size of cards
         bw = (screenWidth.toFloat()*0.8).toInt()
         bh = (screenHeight/16).toInt()
+        // set button width at start
+
+        daysDifference = Period.of(0, 0, 8)
+        formatter = SimpleDateFormat("yyyy-MM-dd")
+        var currentDate: Date = Date()
+        date = LocalDate.of(currentDate.year, currentDate.month, currentDate.day)
+        startDate  = date.minus(daysDifference).toString()
+        endDate = date.plus(daysDifference).toString()
+        Log.w(LOG_TAG, startDate + " : " + endDate)
+        // get screen width and height
+
         // get button
-        viewSecurities = findViewById<Button>(R.id.viewSecurities)
+        viewSecurities = findViewById<Button>(R.id.view_securities_button)
         viewSecurities.setOnClickListener(this)
 
     }
@@ -137,19 +139,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             cv.addView(issueDateView, tempRL)
 
 
-            var pricePer100 : TextView = TextView(this)
-            pricePer100.id = View.generateViewId()
-            pricePer100.setText("Price Per 100 :  " + s.getPricePer100().toString())
-
-            var pp100params : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
-            pp100params.addRule(RelativeLayout.BELOW, issueDateView.id)
-            top += increment
-            pp100params.topMargin = top
-            cv.addView(pricePer100, pp100params)
 
             var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
             lparams.leftMargin = leftMargin
-            lparams.topMargin = 15
+            lparams.topMargin = 30
+            lparams.bottomMargin = 30
 
 
 
@@ -169,9 +163,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             l.id = currentViewId
             var cusipView : TextView = l.findViewById<TextView>(R.id.cusip)
             //cusipView.id = View.generateViewId()
-            cusipView.setText("CUSIP : " + s.getCusip())
+            cusipView.text = "CUSIP: " + s.getCusip()
             var issueDate : TextView  = l.findViewById<TextView>(R.id.issueDate)
-            issueDate.setText("Issue Date : " + s.getIssueDate())
+            issueDate.text = "Issue Date: " + s.getIssueDate().substring(0,10)
+
+            var pricePer100 : TextView = l.findViewById<TextView>(R.id.pricePer100)
+            pricePer100.text = "Price/100: " + s.getPricePer100().toString()
 
             var imageView : ImageView = l.findViewById<ImageView>(R.id.security_type_image)
             if (s.getSecurityType() == "Bill")
