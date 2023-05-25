@@ -173,6 +173,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             var issueDate : TextView  = l.findViewById<TextView>(R.id.issueDate)
             issueDate.setText("Issue Date : " + s.getIssueDate())
 
+            var imageView : ImageView = l.findViewById<ImageView>(R.id.security_type_image)
+            if (s.getSecurityType() == "Bill")
+                imageView.setImageResource(R.drawable.bill)
+            else if (s.getSecurityType() == "Bond")
+                imageView.setImageResource(R.drawable.bond)
+            else if (s.getSecurityType() == "Note")
+                imageView.setImageResource(R.drawable.note)
+            else if (s.getSecurityType() == "TIPPS")
+                imageView.setImageResource(R.drawable.tipps)
+            else if (s.getSecurityType() == "FRN")
+                imageView.setImageResource(R.drawable.frn)
+            else if (s.getSecurityType() == "CMB")
+                imageView.setImageResource(R.drawable.cmb)
+            else
+                imageView.setImageResource(R.drawable.resource_default)
             rl.addView(l, lparams)
 
             previousViewId = currentViewId
