@@ -1,5 +1,6 @@
 package com.example.investingguideandroidui
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -140,6 +141,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         scrollView.addView(rl)
         setContentView(scrollView, scrollViewParams)
+    }
+    fun goToSecuritiesViewActivities( ) {
+        var securitiesViewIntent : Intent = Intent( this, SecuritiesViewActivity::class.java )
+        startActivity( securitiesViewIntent )
     }
 
     override fun onClick(view: View?) {
