@@ -1,6 +1,8 @@
 package com.example.investingguideandroidui
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -8,12 +10,21 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.threadtasks.ReadSecuritiesFromTreasuryDirectWebsite
+import com.google.android.material.tabs.TabLayout
+import org.json.JSONException
+import java.io.InputStream
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -41,6 +52,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     val securityType : String = "Bill"
     val LOG_TAG : String = "Investingguide"
     var APP_UNIQUE_ID : String = "cbhsuisnzdfui2378348347647641edsjhsh"
+    private lateinit var pages : ViewPager
+    private lateinit var securitiesTabs : TabLayout
+    private lateinit var securities : ArrayList<Security>
+    private lateinit var editor : SharedPreferences.Editor
+    private lateinit var pref : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,23 +70,91 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bh = (screenHeight/16).toInt()
         // set button width at start
 
-        daysDifference = Period.of(0, 0, 3)
-        formatter = SimpleDateFormat("yyyy-MM-dd")
+        daysDifference = Period.of(0, 0, 30)  // by default load 30 days worth of data
+        formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        //DateFormat f = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.US)
         var currentDate: Date = Date()
-        date = LocalDate.of(currentDate.year, currentDate.month, currentDate.day)
+        var year: Int = currentDate.year + 1900  // add 1900
+        var month: Int = currentDate.month + 1 // to get month 1 idexed and not 0 indexed
+        var day : Int = currentDate.getDate()
+
+        Log.w(LOG_TAG, "year : $year, month: $month, day: $day")
+
+        date = LocalDate.of(year , month, day)
         startDate  = date.minus(daysDifference).toString()
         endDate = date.plus(daysDifference).toString()
-        Log.w(LOG_TAG, startDate + " : " + endDate)
+        Log.w(LOG_TAG, "start date : $startDate, end date : $endDate")
 
-        viewSecurities = findViewById<Button>(R.id.view_securities_button)
-        viewSecurities.setOnClickListener(this)
+
+        pages = findViewById<ViewPager>(R.id.pages)
+        securitiesTabs = findViewById<TabLayout>(R.id.security_tab_layout)
+
+        //retrieve any saved data
+
+        pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
+        editor = pref.edit()
+
+        //un coment line below to clear previous data
+        //editor.clear() ; editor.commit()
+
+        var oldWebResult : String? = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"")
+
+        if (oldWebResult != null && oldWebResult!!.length > 0 )  {
+            Log.w(LOG_TAG,"Using old data saved")
+            parseWebResult(oldWebResult!!)
+            setPagerAndTabs()
+            displaySecuritiesList()
+        } else {
+            Log.w(LOG_TAG,"Getting new data")
+            //Web Thread that gets json from the internet
+            var taskThread : ReadSecuritiesFromTreasuryDirectWebsite = ReadSecuritiesFromTreasuryDirectWebsite(this)
+            taskThread.start()
+        }
 
     }
 
+    fun setSecuritiesList(securities : ArrayList<Security>) {
+        if ( securities != null )
+            this.securities = securities
+    }
 
-    fun displaySecuritiesList(secs : ArrayList<Security>) {
-        if (secs.size < 1 )
+    fun setPagerAndTabs() {
+        if (securities == null || securities.size == 0)
             return
+
+
+        //first load the list of securities type into an array list of Strings
+        var securityTypes : ArrayList<String> = ArrayList<String>()
+        for ( sec in securities ) {
+            var t :  String = sec.getSecurityType()
+            t = t.lowercase()
+            if (! (t in securityTypes)) {
+                securityTypes.add(t)
+                securitiesTabs.addTab(securitiesTabs.newTab().setText(t.capitalize()))
+            }
+
+        }
+        securitiesTabs.setTabGravity(TabLayout.GRAVITY_FILL)
+    }
+    fun parseWebResult(webResult : String ) {
+
+        try {
+            var jsonParser : JsonParser = JsonParser()
+            securities = jsonParser.parseString(webResult)
+
+            editor.putString(MainActivity.SAVED_WEB_RESULT_KEY, webResult)
+            editor.commit()
+        }  catch ( e: JSONException) {
+
+            Log.w(LOG_TAG,e.toString())
+        }
+
+    }
+
+    fun getFrameLayoutFromSecurities(secs : ArrayList<Security>) : View? {
+        if (secs.size < 1 )
+            return null
+
 
         var startTop : Int = (screenHeight/11).toInt()
         var verticalGap : Int = (screenHeight/7).toInt()
@@ -140,23 +224,62 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             previousViewId = currentViewId
         }
         scrollView.addView(rl)
-        setContentView(scrollView, scrollViewParams)
+        return scrollView
+
     }
+
+    fun displaySecuritiesList() {
+        if (securities == null || securities.size < 1 )
+            return
+        setContentView(getFrameLayoutFromSecurities(securities))
+    }
+
     fun goToSecuritiesViewActivities( ) {
         var securitiesViewIntent : Intent = Intent( this, SecuritiesViewActivity::class.java )
         startActivity( securitiesViewIntent )
     }
 
-    override fun onClick(view: View?) {
-        if (view == null )
-            return
+    inner class CustomFragment : Fragment {
 
+        constructor() {
 
-        if (view == viewSecurities) {
-            //Log.w(LOG_TAG,"You clicked on the button")
-            var taskThread : ReadSecuritiesFromTreasuryDirectWebsite = ReadSecuritiesFromTreasuryDirectWebsite(this)
-            taskThread.start()
         }
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            var frameLayout : FrameLayout = FrameLayout(requireContext())
+
+            return frameLayout
+
+        }
+
+
+    }
+    inner class TabAdapter: FragmentPagerAdapter {
+        private lateinit var context : Context
+        private var totalTabs : Int = 0
+
+        constructor (c : Context, fm : FragmentManager, totalTabs : Int) : super(fm) {
+            context = c
+            this.totalTabs = totalTabs
+        }
+
+        override fun getCount(): Int {
+            return totalTabs
+        }
+
+        override fun getItem(position: Int): Fragment {
+            return CustomFragment()
+        }
+
+    }
+
+    override fun onClick(view: View?) {
+
+
     }
 
     companion object {
