@@ -21,16 +21,13 @@
 
 
             <TableRow>
-                <ImageView
-                    android:id="@+id/security_type_image"
+                <TextView
+                    android:id="@+id/security_type_text_view"
                     android:maxHeight="298px"
                     android:maxWidth="298px"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/resource_default"
-                    android:tag="security_type_tag"
                     android:layout_height="298px"
-                    android:layout_width="298px"/>
+                    android:layout_width="298px"
+                    android:text="securityType"/>
 
                 <TableRow>
                     <TableLayout

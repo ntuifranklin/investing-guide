@@ -5,11 +5,8 @@ import android.content.SharedPreferences
 
 import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.models.Security
-import org.json.JSONArray
 import org.json.JSONException
-import org.json.JSONObject
 import android.util.Log
-import com.example.investingguideandroidui.JsonParser
 import java.io.InputStream
 import java.net.URL
 import java.util.*
@@ -46,33 +43,22 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
             var pref : SharedPreferences = fromActivity.getSharedPreferences(fromActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
             var editor : SharedPreferences.Editor = pref.edit()
             editor.clear()
-            var oldWebResult : String?
-            oldWebResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"")
 
-            if ( oldWebResult == null || oldWebResult.length == 0 ) {
-                Log.w(fromActivity.LOG_TAG,"No previous result saved. Getting fresh data")
-                val urlObject : URL = URL(webUrl)
-                val inputStream: InputStream = urlObject.openStream()
-                val scan: Scanner = Scanner(inputStream)
+            val urlObject : URL = URL(webUrl)
+            val inputStream: InputStream = urlObject.openStream()
+            val scan: Scanner = Scanner(inputStream)
 
-                while (scan.hasNext())
-                    webResult += scan.nextLine()
+            while (scan.hasNext())
+                webResult += scan.nextLine()
 
-                editor.putString(MainActivity.SAVED_WEB_RESULT_KEY, webResult)
-                editor.commit()
+            editor.putString(MainActivity.SAVED_WEB_RESULT_KEY, webResult)
+            editor.commit()
 
-                inputStream.close()
-            } else {
-                webResult = oldWebResult
-                Log.w(fromActivity.LOG_TAG,"Reusing prevuious data : " + webResult.substring(0,20))
-            }
-
-
-
+            inputStream.close()
 
 
         } catch ( e: JSONException) {
-
+            Log.w(fromActivity.LOG_TAG, "Error in Class : ${this.name}, Thread class pulling data from remote server")
 
         }
         fromActivity.runOnUiThread(displayTask)
@@ -85,7 +71,7 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
         override fun run() {
             fromActivity.parseWebResult(webResult)
             fromActivity.setPagerAndTabs()
-            fromActivity.displaySecuritiesList()
+            //fromActivity.displaySecuritiesList()
         }
     }
 }

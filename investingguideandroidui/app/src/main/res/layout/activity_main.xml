@@ -12,18 +12,22 @@
         android:id="@+id/pages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1db995">
+        android:background="@color/grey_300">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/security_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pages"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="100dp"
+            tools:layout_editor_absoluteX="8dp"
+            app:tabBackground="@color/security_tab_background"
+            app:tabSelectedTextColor="@color/financial_green_700"
+            app:tabTextColor="@color/financial_green_200">
+        </com.google.android.material.tabs.TabLayout>
     </androidx.viewpager.widget.ViewPager>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/security_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pages"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="100dp"
-        tools:layout_editor_absoluteX="8dp">
-    </com.google.android.material.tabs.TabLayout>
 
 
 </RelativeLayout>
