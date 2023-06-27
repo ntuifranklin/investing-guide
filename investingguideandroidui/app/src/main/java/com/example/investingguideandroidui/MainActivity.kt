@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bh = (screenHeight/16).toInt()
         // set button width at start
 
-        daysDifference = Period.of(0, 0, 100)  // by default load 30 days worth of data
+        daysDifference = Period.of(0, 0, 30)  // by default load 30 days worth of data
         formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
         //DateFormat f = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.US)
         var currentDate: Date = Date()
@@ -153,7 +153,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val hm : HashMap<String, Int> = SecurityType().securityTypeMapToInt()
         for ( (secType:String, secInt: Int) in hm ) {
             securityTypes.add(secType)
-            securitiesTabs.addTab(securitiesTabs!!.newTab().setText(secType.uppercase()))
+            var tabTitle: String = secType.uppercase()
+            securitiesTabs.addTab(securitiesTabs!!.newTab().setText(tabTitle))
         }
 
         Log.w(LOG_TAG,"All Security Types : ${securityTypes.toString()}")
@@ -174,7 +175,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             editor.commit()
         }  catch ( e: JSONException) {
 
-            Log.w(LOG_TAG,"JskParser failing for ${webResult}")
+            Log.w(LOG_TAG,"JsonParser failing for ${webResult}")
         }
 
     }
@@ -226,8 +227,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             var pricePer100 : TextView = l.findViewById<TextView>(R.id.pricePer100)
             pricePer100.text = "Price/100: " + s.getPricePer100().toString()
 
-            var securityTypeTextView : TextView = l.findViewById<TextView>(R.id.security_type_text_view)
-            securityTypeTextView.setText(s.getSecurityType().uppercase())
 
             rl.addView(l, lparams)
 

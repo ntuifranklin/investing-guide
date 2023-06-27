@@ -38,7 +38,7 @@ class TipsFragment : Fragment {
         }
         var tipsView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
         ly!!.addView(tipsView!!)
-        return ly
+        return ly!!
     }
 
 }

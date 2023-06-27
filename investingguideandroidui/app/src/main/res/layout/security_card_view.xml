@@ -21,58 +21,48 @@
 
 
             <TableRow>
-                <TextView
-                    android:id="@+id/security_type_text_view"
-                    android:maxHeight="298px"
-                    android:maxWidth="298px"
-                    android:layout_height="298px"
-                    android:layout_width="298px"
-                    android:text="securityType"/>
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
 
-                <TableRow>
-                    <TableLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_weight="2"
-                        android:orientation="horizontal">
-
-                        <TableRow>
-                            <TextView
-                                android:id="@+id/cusip"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:text=""
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                />
-
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:id="@+id/issueDate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:text=""
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                 />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:id="@+id/pricePer100"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:text=""
-                                android:textAppearance="?android:attr/textAppearanceMedium" />
-                        </TableRow>
-                    </TableLayout>
-                </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/cusip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/issueDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                             />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/pricePer100"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </TableRow>
+                </TableLayout>
             </TableRow>
+
         </TableLayout>
     </androidx.cardview.widget.CardView>
 
