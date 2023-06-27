@@ -32,11 +32,8 @@ class TipsFragment : Fragment {
         var ly : FrameLayout = inflater.inflate(R.layout.fragment_tips, container, false) as FrameLayout
         var secType : String = ""
         var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
-        for ( (secT:String,secId:Int) in hm ){
-            if (secId == MainActivity.TIPS)
-                secType = secT
-        }
-        var tipsView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
+
+        var tipsView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures)
         ly!!.addView(tipsView!!)
         return ly!!
     }

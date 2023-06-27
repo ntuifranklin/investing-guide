@@ -32,12 +32,8 @@ class CmbFragment : Fragment {
         var ly : FrameLayout = inflater.inflate(R.layout.fragment_cmb, container, false) as FrameLayout
         var secType : String = ""
         var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
-        for ( (secT:String,secId:Int) in hm ){
-            if (secId == MainActivity.CMB)
-                secType = secT
-        }
 
-        var cmbView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
+        var cmbView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures)
         ly!!.addView(cmbView!!)
         return ly
     }

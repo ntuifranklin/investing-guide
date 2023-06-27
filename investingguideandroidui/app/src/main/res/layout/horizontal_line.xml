@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<View android:id="@+id/inter_card_view_spacer"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+
+
+
+
+

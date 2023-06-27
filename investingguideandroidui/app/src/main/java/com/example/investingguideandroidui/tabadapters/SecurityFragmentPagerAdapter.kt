@@ -14,9 +14,42 @@ class SecurityFragmentPagerAdapter : FragmentPagerAdapter {
     lateinit var securitys : ArrayList<Security>
     lateinit var fromActivity : MainActivity
 
+    var bills : ArrayList<Security> = ArrayList<Security>()
+    var bonds : ArrayList<Security> = ArrayList<Security>()
+    var cmbs : ArrayList<Security> = ArrayList<Security>()
+    var frns : ArrayList<Security> = ArrayList<Security>()
+    var notes : ArrayList<Security> = ArrayList<Security>()
+    var tips : ArrayList<Security> = ArrayList<Security>()
+
     constructor(fm: FragmentManager, from: MainActivity, secs: ArrayList<Security>) : super(fm) {
         fromActivity = from
         securitys = secs
+
+
+        for ( s in securitys ) {
+            if (s.getSecurityType().lowercase() == "bill")
+                bills.add(s)
+            else if (s.getSecurityType().lowercase() == "bond")
+                bonds.add(s)
+            else if (s.getSecurityType().lowercase() == "cmb")
+                cmbs.add(s)
+            else if (s.getSecurityType().lowercase() == "frn")
+                frns.add(s)
+            else if (s.getSecurityType().lowercase() == "note")
+                notes.add(s)
+            else
+                tips.add(s)
+
+            /*
+            bills.sortBy { it.getPricePerDay() }
+            bonds.sortBy { it.getPricePerDay() }
+            cmbs.sortBy { it.getPricePerDay() }
+            frns.sortBy { it.getPricePerDay() }
+            notes.sortBy { it.getPricePerDay() }
+            tips.sortBy { it.getPricePerDay() }
+            */
+        }
+
     }
     override fun getCount(): Int {
         return SecurityType().securityTypeMapToInt().size
@@ -25,17 +58,17 @@ class SecurityFragmentPagerAdapter : FragmentPagerAdapter {
     override fun getItem(position: Int): Fragment {
 
         if ( position == MainActivity.BILL)
-            return BillFragment(fromActivity,securitys)
+            return BillFragment(fromActivity,bills)
         else if ( position == MainActivity.BOND)
-            return BondFragment(fromActivity,securitys)
+            return BondFragment(fromActivity,bonds)
         else if ( position == MainActivity.CMB )
-            return CmbFragment(fromActivity,securitys)
+            return CmbFragment(fromActivity,cmbs)
         else if (position == MainActivity.FRN)
-            return FrnFragment(fromActivity,securitys)
+            return FrnFragment(fromActivity,frns)
         else if (position  == MainActivity.TIPS)
-            return TipsFragment(fromActivity,securitys)
+            return TipsFragment(fromActivity,tips)
         else
-            return NoteFragment(fromActivity,securitys)
+            return NoteFragment(fromActivity,notes)
 
 
     }

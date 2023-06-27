@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bw = (screenWidth.toFloat()*0.8).toInt()
         bh = (screenHeight/16).toInt()
         // set button width at start
-
         daysDifference = Period.of(0, 0, 30)  // by default load 30 days worth of data
         formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
         //DateFormat f = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.US)
@@ -83,12 +82,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var month: Int = currentDate.month + 1 // to get month 1 idexed and not 0 indexed
         var day : Int = currentDate.getDate()
 
-        Log.w(LOG_TAG, "year : $year, month: $month, day: $day")
+        //Log.w(LOG_TAG, "year : $year, month: $month, day: $day")
 
         date = LocalDate.of(year , month, day)
         startDate  = date.minus(daysDifference).toString()
         endDate = date.plus(daysDifference).toString()
-        Log.w(LOG_TAG, "start date : $startDate, end date : $endDate")
+        //Log.w(LOG_TAG, "start date : $startDate, end date : $endDate")
 
 
 
@@ -98,7 +97,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         editor = pref.edit()
 
         //un coment line below to clear previous data
-        editor.clear() ; editor.commit()
+        editor.clear()
+        editor.commit()
 
         var oldWebResult : String? = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"")
 
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             securitiesTabs.addTab(securitiesTabs.newTab().setText(tabTitle))
         }
 
-        Log.w(LOG_TAG,"All Security Types : ${securityTypes.toString()}")
+        //Log.w(LOG_TAG,"All Security Types : ${securityTypes.toString()}")
         securitiesTabs.setTabGravity(TabLayout.GRAVITY_FILL)
         pages.adapter = myTabAdapter
         pages.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(securitiesTabs))
@@ -171,12 +171,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             editor.commit()
         }  catch ( e: JSONException) {
 
-            Log.w(LOG_TAG,"JsonParser failing for ${webResult}")
+            //Log.w(LOG_TAG,"JsonParser failing for ${webResult}")
         }
 
     }
 
-    fun getFrameLayoutFromSecurities(context: Context, secs : ArrayList<Security>, secType : String? ) : ScrollView? {
+    fun getFrameLayoutFromSecurities(context: Context, secs : ArrayList<Security> ) : ScrollView? {
         if (secs.size < 1 || context == null )
             return null
 
@@ -184,25 +184,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         screenHeight = Resources.getSystem( ).displayMetrics.heightPixels
         var startTop : Int = (screenHeight/11).toInt()
         var verticalGap : Int = (screenHeight/7).toInt()
-        var leftMargin : Int = (screenWidth/15).toInt()
+        var leftMargin : Int = (screenWidth/18).toInt()
         var rightMargin : Int = leftMargin
         var rl : RelativeLayout = RelativeLayout(context)
         var currentViewId : Int = 0
         var previousViewId : Int = 0
         var scrollView : ScrollView = ScrollView(context)
         var scrollViewParams : TableLayout.LayoutParams = TableLayout.LayoutParams(screenWidth, screenHeight)
-
+        scrollViewParams.topMargin = 400
+        scrollViewParams.leftMargin = leftMargin
+        scrollViewParams.rightMargin = rightMargin
         scrollView.layoutParams = scrollViewParams
-        var no : Int = 1
+        var no : Int = 0
         for ( s in secs ) {
-            if ( secType != null && s.getSecurityType().lowercase() != secType.lowercase())
-                continue
+
             var top : Int = 0
             var increment : Int = 38
             currentViewId = View.generateViewId()
 
             var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
             lparams.leftMargin = leftMargin
+            lparams.rightMargin = rightMargin
             lparams.topMargin = 10
             lparams.bottomMargin = 10
             no += 1
@@ -210,7 +212,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 lparams.addRule(RelativeLayout.BELOW, previousViewId)
             }
 
-            var l : View = LayoutInflater.from(this).inflate(R.layout.security_card_view, null)
+            var l : View = LayoutInflater.from(context).inflate(R.layout.security_card_view, null)
 
             l.id = currentViewId
             var cusipView : TextView = l.findViewById<TextView>(R.id.cusip)
@@ -221,7 +223,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             var pricePer100 : TextView = l.findViewById<TextView>(R.id.pricePer100)
             pricePer100.text = "PricePer100: " + s.getPricePer100().toString()
-
 
             rl.addView(l, lparams)
 
@@ -235,7 +236,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     fun displaySecuritiesList() {
         if (securities == null || securities.size < 1 )
             return
-        setContentView(getFrameLayoutFromSecurities(this, securities, null))
+        setContentView(getFrameLayoutFromSecurities(this, securities))
     }
 
     fun goToSecuritiesViewActivities( ) {
@@ -260,30 +261,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         }
 
-
-    }
-    inner class TabAdapter: FragmentPagerAdapter {
-        private lateinit var context : Context
-        private var totalTabs : Int = 0
-
-        constructor (c : Context, fm : FragmentManager, totalTabs : Int) : super(fm) {
-            context = c
-            this.totalTabs = totalTabs
-        }
-
-        override fun getCount(): Int {
-            return totalTabs
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return CustomFragment()
-        }
-
     }
 
     inner class TabListener : TabLayout.OnTabSelectedListener {
-        override fun onTabSelected(tab: TabLayout.Tab) {
-            pages!!.currentItem = tab.position
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+                pages.currentItem = tab!!.position
 
         }
 
@@ -292,7 +274,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {
-
+            pages.currentItem = tab!!.position
         }
     }
 

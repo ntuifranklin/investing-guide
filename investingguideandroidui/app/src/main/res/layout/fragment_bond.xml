@@ -2,12 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:text="Bond"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/bondGraphview"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+       />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Bond"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
 </FrameLayout>

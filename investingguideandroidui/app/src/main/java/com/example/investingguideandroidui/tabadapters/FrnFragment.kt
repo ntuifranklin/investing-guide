@@ -32,12 +32,8 @@ class FrnFragment : Fragment {
         var ly : FrameLayout = inflater.inflate(R.layout.fragment_frn, container, false) as FrameLayout
         var secType : String = ""
         var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
-        for ( (secT:String,secId:Int) in hm ){
-            if (secId == MainActivity.FRN)
-                secType = secT
-        }
 
-        var frnView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
+        var frnView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures)
         ly!!.addView(frnView!!)
         return ly
     }

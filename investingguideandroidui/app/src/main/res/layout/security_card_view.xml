@@ -13,8 +13,12 @@
         android:theme="@style/SecurityCardView"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="1dp">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:elevation="10dp"
+        card_view:cardCornerRadius="10dp">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -26,7 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="1dp"
                     android:text=""
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     />
@@ -37,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="1dp"
                     android:text=""
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     />
@@ -48,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="1dp"
                     android:text=""
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </TableRow>

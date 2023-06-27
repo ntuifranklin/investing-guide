@@ -12,6 +12,7 @@ class Security {
     private var pricePerWeek : Double = 0.0
     private var pricePerDay : Double = 0.0
     private var securityTerm : String = "0-Week"
+    private var securityTermInDays : Double = 0.0
 
 
     constructor() : this("1970-01-01", 99.65, "{}") {
@@ -46,7 +47,10 @@ class Security {
     }
 
     fun setPricePer100(pp100: Double ) {
-        this.pricePer100 = pp100
+        if (pp100 != null )
+            pricePer100 = pp100
+        else
+            pricePer100 = 0.0
     }
 
     fun setPricePer100(pp100Str: String ) {
@@ -67,10 +71,17 @@ class Security {
         var s : SecurityTermToDays  = SecurityTermToDays(securityTerm)
         var totalDays : Double = s.convert()
         if (totalDays > 0.0 && pricePer100 > 0.0 ) {
+            setSecurityTermInDays(totalDays)
             pricePerDay = pricePer100 / totalDays
             pricePerWeek = pricePerDay * 7.0
         }
     }
+
+
+    fun setSecurityTermInDays(secTermInDays : Double = 0.0) {
+        securityTermInDays = secTermInDays
+    }
+
 
 
     fun getSecurityType() : String {
@@ -95,20 +106,21 @@ class Security {
 
     }
 
+
+    fun getPricePerDay() : Double{
+
+        return  pricePerDay
+
+    }
+
     fun getJsonRawObject() : String {
         return jsonRawObject
     }
 
-    fun computePricePerWeek() : Double {
-        var s  : SecurityTermToDays = SecurityTermToDays(securityTerm)
-        var denominator : Double = 0.0
-        denominator = s.convert()
-        if (denominator == 0.0 )
-            pricePerWeek = 0.0
-        else
-            pricePerWeek = pricePer100 / denominator
-        return pricePerWeek
+    fun getSecurityTermInDays() : Double {
+        return securityTermInDays
     }
+
 
 
 }

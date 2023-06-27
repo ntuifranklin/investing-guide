@@ -71,7 +71,7 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
         override fun run() {
             fromActivity.parseWebResult(webResult)
             fromActivity.setPagerAndTabs()
-            //fromActivity.displaySecuritiesList()
+
         }
     }
 }
