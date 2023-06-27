@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UY</string>
+    <string name="log_tag">InvestingGuideApp</string>
 </resources>

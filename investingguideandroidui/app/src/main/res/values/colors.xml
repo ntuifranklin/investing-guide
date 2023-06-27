@@ -13,6 +13,7 @@
     <color name="financial_green_200">#4DC491</color>
     <color name="financial_green_500">#388F6A</color>
     <color name="financial_green_700">#21553F</color>
+    <color name="security_tab_background">#BFEDB7</color>
 </resources>
 
 

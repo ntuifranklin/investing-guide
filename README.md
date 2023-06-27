@@ -1,10 +1,10 @@
 # investing-guide
 
-## version 1   
-<img src="./imgs/a.gif">  
+# versions
+|      Version 1            |      Version 2            |      Version 3            |
+|---------------------------|---------------------------|---------------------------|
+| <img src="./imgs/a.gif">  | <img src="./imgs/b.gif">  | <img src="./imgs/c.gif"> |  
 
-## version 2  
-<img src="./imgs/b.gif">
 
 Android app that helps see what treasury security bills are available for sale.  
 It shows the different securities and the following fields :  
@@ -18,4 +18,4 @@ It shows the different securities and the following fields :
 Import the `investingguideandroidui` into android studio and run the `MainActivity` class.
 The emulator should show a list of securities available for the last 3 days.
 
-Please fork the project and add new fnctionalities
+Please fork the project and add new functionalities
