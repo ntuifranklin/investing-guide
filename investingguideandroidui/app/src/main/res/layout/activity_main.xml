@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
             app:tabMode="scrollable"
-            tools:layout_editor_absoluteX="8dp"
+
             app:tabBackground="@color/security_tab_background"
             app:tabSelectedTextColor="@color/financial_green_700"
             app:tabTextColor="@color/financial_green_200">

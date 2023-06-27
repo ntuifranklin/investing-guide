@@ -12,55 +12,45 @@
         android:id="@+id/card_view"
         android:theme="@style/SecurityCardView"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="1dp">
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-
             <TableRow>
-                <TableLayout
+                <TextView
+                    android:id="@+id/cusip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_weight="2"
-                    android:orientation="horizontal">
-
-                    <TableRow>
-                        <TextView
-                            android:id="@+id/cusip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:text=""
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:id="@+id/issueDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:text=""
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                             />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:id="@+id/pricePer100"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:text=""
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-                    </TableRow>
-                </TableLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="3dp"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/issueDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="3dp"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/pricePer100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="3dp"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
             </TableRow>
 
         </TableLayout>

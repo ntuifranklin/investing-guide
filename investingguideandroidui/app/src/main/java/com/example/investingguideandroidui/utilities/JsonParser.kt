@@ -26,7 +26,7 @@ class JsonParser {
            try {
 
                var securityObject : JSONObject = jsonArray.optJSONObject(index)
-               Log.w(MainActivity.LOG_TAG_EXTERIOR,"security object : $securityObject ")
+               //Log.w(MainActivity.LOG_TAG_EXTERIOR,"security object : $securityObject ")
                var security: Security = Security()
                security.setJsonRawObject(jsonArray.optString(index, "{}"))
                var st : String = securityObject.getString("securityType")

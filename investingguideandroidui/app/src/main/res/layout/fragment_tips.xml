@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:text="TIPS Fragment"
+        android:text="TIPS"
         android:textSize="16sp"
         android:textStyle="bold"/>
 

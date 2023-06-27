@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_main)
 
-        //test("SecurityTerm.convert() ")
+        //test(" UpperCase and Lowercase transformations ")
 
         LOG_TAG = resources.getString(R.string.log_tag)
         LOG_TAG_EXTERIOR = LOG_TAG
@@ -122,13 +122,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if ( t == null )
             return
         Log.w(t, "########### Testing : $title ############## ")
-        var days : Double = 0.0
-        var secTerms : Array<String> = arrayOf("4-Week","3-mOnThs","51-Week 7-dAys 3-Years 5-Months")
-        for (securityTerm : String in  secTerms ) {
-            var s : SecurityTermToDays = SecurityTermToDays(securityTerm)
-            days = s.convert()
-            Log.w(t,"$securityTerm in days is ${days.toString()}")
-        }
+        var s : String = "note"
+        Log.w(t, "s.uppercase : ${s.uppercase()}, s : $s")
+        Log.w(t, "s.toUpperCase : ${s.toUpperCase()}, s : $s")
 
 
         Log.w(t, "########### End of Testing ############## ")
@@ -154,7 +150,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         for ( (secType:String, secInt: Int) in hm ) {
             securityTypes.add(secType)
             var tabTitle: String = secType.uppercase()
-            securitiesTabs.addTab(securitiesTabs!!.newTab().setText(tabTitle))
+            securitiesTabs.addTab(securitiesTabs.newTab().setText(tabTitle))
         }
 
         Log.w(LOG_TAG,"All Security Types : ${securityTypes.toString()}")
@@ -207,9 +203,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
             lparams.leftMargin = leftMargin
-            lparams.topMargin = 20
-
-
+            lparams.topMargin = 10
+            lparams.bottomMargin = 10
             no += 1
             if (previousViewId != 0 ) {
                 lparams.addRule(RelativeLayout.BELOW, previousViewId)
@@ -225,7 +220,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             issueDate.text = "Issue Date: " + s.getIssueDate().substring(0,10)
 
             var pricePer100 : TextView = l.findViewById<TextView>(R.id.pricePer100)
-            pricePer100.text = "Price/100: " + s.getPricePer100().toString()
+            pricePer100.text = "PricePer100: " + s.getPricePer100().toString()
 
 
             rl.addView(l, lparams)
