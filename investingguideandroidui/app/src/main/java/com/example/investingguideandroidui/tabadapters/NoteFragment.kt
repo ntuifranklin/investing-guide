@@ -33,8 +33,12 @@ class NoteFragment : Fragment {
         var ly : FrameLayout = inflater.inflate(R.layout.fragment_note, container, false) as FrameLayout
         var secType : String = ""
         var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
+        for ( (secT:String,secId:Int) in hm ){
+            if (secId == MainActivity.NOTE)
+                secType = secT
+        }
 
-        var noteView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures)
+        var noteView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
         ly!!.addView(noteView!!)
         return ly
     }

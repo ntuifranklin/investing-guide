@@ -68,7 +68,7 @@ class SecurityTermToDays {
         var days : Double = 0.0
 
         var tokens : List<String> = termStr.split(" ")
-        Log.w(MainActivity.LOG_TAG_EXTERIOR,"tokens : ${tokens.toString()}")
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"tokens : ${tokens.toString()}")
         for ( token : String in tokens ){
             if (token == null || token.length == 0)
                 continue

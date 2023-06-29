@@ -12,11 +12,15 @@ import com.example.investingguideandroidui.R
 import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.utilities.SecurityType
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 
 class CmbFragment : Fragment {
 
     public final lateinit var fromActivity: SecuritiesViewActivity
 
+    lateinit var lseries : LineGraphSeries<DataPoint>
+    lateinit var dpoints : Array<DataPoint>
     public lateinit var secures : ArrayList<Security>
     constructor(from: SecuritiesViewActivity, secs: ArrayList<Security>) {
         fromActivity = from
@@ -33,8 +37,12 @@ class CmbFragment : Fragment {
         var ly : FrameLayout = inflater.inflate(R.layout.fragment_cmb, container, false) as FrameLayout
         var secType : String = ""
         var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
+        for ( (secT:String,secId:Int) in hm ){
+            if (secId == MainActivity.CMB)
+                secType = secT
+        }
 
-        var cmbView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures)
+        var cmbView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
         ly!!.addView(cmbView!!)
         return ly
     }

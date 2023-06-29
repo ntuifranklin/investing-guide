@@ -21,8 +21,10 @@ import com.jjoe64.graphview.series.LineGraphSeries
 class BillFragment : Fragment {
 
     public final lateinit var fromActivity: SecuritiesViewActivity
-
     public lateinit var secures : ArrayList<Security>
+
+    lateinit var lseries : LineGraphSeries<DataPoint>
+    lateinit var dpoints : Array<DataPoint>
     constructor(from: SecuritiesViewActivity, secs: ArrayList<Security>) {
         fromActivity = from
         secures = secs
@@ -34,14 +36,18 @@ class BillFragment : Fragment {
         savedInstanceState: Bundle?
     ): View? {
 
-        lateinit var lseries : LineGraphSeries<DataPoint>
-        lateinit var dpoints : Array<DataPoint>
         var ly : FrameLayout =
             inflater.inflate(R.layout.fragment_bill, container, false) as FrameLayout
+        var secType : String = ""
         var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
+        for ( (secT:String,secId:Int) in hm ){
+            if (secId == MainActivity.BILL)
+                secType = secT
+        }
 
-
-        var billsView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures)
+        var billsView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
+        ly!!.addView(billsView!!)
+        return ly
 
         /*
         var dps : Array<DataPoint> = getDataPoints()
