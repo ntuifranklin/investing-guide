@@ -1,12 +1,14 @@
 package com.example.investingguideandroidui.threadtasks
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 
 import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.models.Security
 import org.json.JSONException
 import android.util.Log
+import com.example.investingguideandroidui.SecuritiesViewActivity
 import java.io.InputStream
 import java.net.URL
 import java.util.*
@@ -16,44 +18,41 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
     private lateinit var securities : ArrayList<Security>
     private lateinit var fromActivity : MainActivity
     private var webResult : String = ""
+    private var searchRoute : String = "search"
 
-    constructor(activity: MainActivity) {
+    constructor(activity: MainActivity, search_route : String = "search") {
         this.fromActivity = activity
         securities = ArrayList<Security>()
+        searchRoute = search_route
 
     }
 
     override fun run () {
         super.run()
-        var displayTask : DisplayListOfSecurities = DisplayListOfSecurities()
+        var displayTask : ProcesAndViewWebResult = ProcesAndViewWebResult()
 
         var tempUrl : String = fromActivity.BASE_URL
-        tempUrl += "?"
+
+        tempUrl += "/${searchRoute}?"
         tempUrl += "format=" + fromActivity.format
         //tempUrl += "&securityType=" + MainActivity.securityType
         tempUrl += "&startDate=" + fromActivity.startDate
         tempUrl += "&endDate=" + fromActivity.endDate
-        tempUrl += "&dateFieldName=" + fromActivity.dateFieldName
+        if (searchRoute == MainActivity.AUCTIONED_ROUTE)
+            tempUrl += "&dateFieldName=" + fromActivity.auctionDateFieldName
+        else
+            tempUrl += "&dateFieldName=" + fromActivity.issueDateFieldName
         val webUrl : String = tempUrl
         // get data from server
         try {
 
             Log.w(fromActivity.LOG_TAG,webUrl)
-
-            var pref : SharedPreferences = fromActivity.getSharedPreferences(fromActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
-            var editor : SharedPreferences.Editor = pref.edit()
-            editor.clear()
-
             val urlObject : URL = URL(webUrl)
             val inputStream: InputStream = urlObject.openStream()
             val scan: Scanner = Scanner(inputStream)
 
             while (scan.hasNext())
                 webResult += scan.nextLine()
-
-            editor.putString(MainActivity.SAVED_WEB_RESULT_KEY, webResult)
-            editor.commit()
-
             inputStream.close()
 
 
@@ -66,11 +65,10 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
     }
 
 
-    inner class DisplayListOfSecurities : Runnable {
+    inner class ProcesAndViewWebResult : Runnable {
 
         override fun run() {
-            fromActivity.parseWebResult(webResult)
-            fromActivity.setPagerAndTabs()
+            fromActivity.saveWebResult(webResult)
 
         }
     }

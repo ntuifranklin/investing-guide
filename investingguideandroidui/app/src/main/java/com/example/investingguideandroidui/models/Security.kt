@@ -121,6 +121,10 @@ class Security {
         return securityTermInDays
     }
 
+    override fun toString() : String {
+        return "${jsonRawObject}"
+    }
+
 
 
 }

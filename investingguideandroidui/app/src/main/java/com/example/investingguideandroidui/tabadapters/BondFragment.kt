@@ -9,6 +9,7 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.R
+import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.utilities.SecurityType
 import com.jjoe64.graphview.GraphView
@@ -16,14 +17,13 @@ import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 
 class BondFragment : Fragment {
-    public final lateinit var fromActivity: MainActivity
-
+    public final lateinit var fromActivity: SecuritiesViewActivity
     public lateinit var secures : ArrayList<Security>
-
-
     lateinit var lseries : LineGraphSeries<DataPoint>
     lateinit var dpoints : Array<DataPoint>
-    constructor(from: MainActivity, secs: ArrayList<Security>) {
+
+    constructor(from: SecuritiesViewActivity, secs: ArrayList<Security>) {
+
         fromActivity = from
         secures = secs
 
@@ -38,8 +38,14 @@ class BondFragment : Fragment {
         var ly : FrameLayout =
             inflater.inflate(R.layout.fragment_bond, container, false)  as FrameLayout
 
-        var bondView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures)
+        var secType : String = ""
+        var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
+        for ( (secT:String,secId:Int) in hm ){
+            if (secId == MainActivity.BOND)
+                secType = secT
+        }
 
+        var bondView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
         /*
         var dps : Array<DataPoint> = getDataPoints()
 
@@ -61,8 +67,6 @@ class BondFragment : Fragment {
         var ds = Array<DataPoint>(secures.size, {
                 i -> DataPoint(secures[i].getPricePerDay(), secures[i].getSecurityTermInDays())
         })
-
-
         return ds
     }
 }

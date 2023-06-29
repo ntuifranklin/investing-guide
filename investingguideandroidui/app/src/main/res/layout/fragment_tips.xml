@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="TIPS"
-        android:textSize="16sp"
+        android:text="@string/no_notes_label"
+        android:textSize="46sp"
         android:textStyle="bold"/>
 
 </FrameLayout>

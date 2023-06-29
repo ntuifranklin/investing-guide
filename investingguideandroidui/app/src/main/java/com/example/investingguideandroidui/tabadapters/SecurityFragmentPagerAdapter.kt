@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.investingguideandroidui.MainActivity
+import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.utilities.SecurityType
 
@@ -12,8 +13,7 @@ class SecurityFragmentPagerAdapter : FragmentPagerAdapter {
     val hm : HashMap<String, Int> = SecurityType().securityTypeMapToInt()
 
     lateinit var securitys : ArrayList<Security>
-    lateinit var fromActivity : MainActivity
-
+    lateinit var fromActivity : SecuritiesViewActivity
     var bills : ArrayList<Security> = ArrayList<Security>()
     var bonds : ArrayList<Security> = ArrayList<Security>()
     var cmbs : ArrayList<Security> = ArrayList<Security>()
@@ -21,7 +21,8 @@ class SecurityFragmentPagerAdapter : FragmentPagerAdapter {
     var notes : ArrayList<Security> = ArrayList<Security>()
     var tips : ArrayList<Security> = ArrayList<Security>()
 
-    constructor(fm: FragmentManager, from: MainActivity, secs: ArrayList<Security>) : super(fm) {
+    constructor(fm: FragmentManager, from: SecuritiesViewActivity, secs: ArrayList<Security>) : super(fm) {
+
         fromActivity = from
         securitys = secs
 

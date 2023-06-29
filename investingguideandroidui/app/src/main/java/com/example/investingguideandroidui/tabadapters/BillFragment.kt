@@ -10,6 +10,7 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.R
+import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.utilities.SecurityType
 import com.jjoe64.graphview.GraphView
@@ -19,10 +20,10 @@ import com.jjoe64.graphview.series.LineGraphSeries
 
 class BillFragment : Fragment {
 
-    public final lateinit var fromActivity: MainActivity
+    public final lateinit var fromActivity: SecuritiesViewActivity
 
     public lateinit var secures : ArrayList<Security>
-    constructor(from: MainActivity, secs: ArrayList<Security>) {
+    constructor(from: SecuritiesViewActivity, secs: ArrayList<Security>) {
         fromActivity = from
         secures = secs
     }

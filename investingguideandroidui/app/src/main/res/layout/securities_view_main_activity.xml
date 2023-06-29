@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecuritiesViewActivity">
+    <LinearLayout
+        android:id="@+id/line_return_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/securities_return_main_button_top"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/return_main_activity_button_label"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tabs_and_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_return_button">
+
+        <androidx.viewpager.widget.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_300">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/security_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:tabMode="scrollable"
+                app:tabBackground="@color/security_tab_background"
+                app:tabSelectedTextColor="@color/financial_green_700"
+                app:tabTextColor="@color/financial_green_200">
+            </com.google.android.material.tabs.TabLayout>
+
+        </androidx.viewpager.widget.ViewPager>
+    </LinearLayout>
+
+</RelativeLayout>
+
