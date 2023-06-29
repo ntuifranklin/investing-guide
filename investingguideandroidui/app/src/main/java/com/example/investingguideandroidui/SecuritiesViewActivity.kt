@@ -41,11 +41,7 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var extras = this.intent
-        if (extras == null ) {
-            Log.w(MainActivity.LOG_TAG_EXTERIOR, "In ${localClassName} Previous Activity is " +
-                    "supposed to pass data to this Activity. Failed, returning ")
-            finish()
-        }
+
 
         setContentView(R.layout.securities_view_main_activity)
         //set onclick listener for return butons
@@ -63,7 +59,7 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
 
         } catch(e : Exception) {
             Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error parsning json object : ${e}. Returning to Previous ")
-            finish()
+            //finish()
         }
 
     }
@@ -87,8 +83,8 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
             securitiesTabs.addTab(securitiesTabs.newTab().setText(tabTitle))
         }
 
-        Log.w(MainActivity.LOG_TAG_EXTERIOR,"All Security Types : ${securityTypes.toString()}")
-        securitiesTabs.setTabGravity(TabLayout.GRAVITY_FILL)
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"All Security Types : ${securityTypes.toString()}")
+        //securitiesTabs.setTabGravity(TabLayout.GRAVITY_FILL)
         pages.adapter = myTabAdapter
         pages.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(securitiesTabs))
 

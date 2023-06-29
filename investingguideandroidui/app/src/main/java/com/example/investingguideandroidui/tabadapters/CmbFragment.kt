@@ -47,4 +47,14 @@ class CmbFragment : Fragment {
         return ly
     }
 
+
+    fun getDataPoints() : Array<DataPoint> {
+        if (secures == null || secures.size == 0)
+            return arrayOf(DataPoint(0.0,0.0))
+        var ds = Array<DataPoint>(secures.size, {
+                i -> DataPoint(secures[i].getPricePerDay(), secures[i].getSecurityTermInDays())
+        })
+        return ds
+    }
+
 }
