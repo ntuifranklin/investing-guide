@@ -6,8 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:text="CMB"
-        android:textSize="16sp"
+        android:text="@string/no_cmb_label"
+        android:textSize="46sp"
         android:textStyle="bold"/>
 
 </FrameLayout>

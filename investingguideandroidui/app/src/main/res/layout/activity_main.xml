@@ -33,7 +33,7 @@
             android:id="@+id/startDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:startYear="2020"
+            android:startYear="2018"
             android:datePickerMode="spinner"
             android:calendarViewShown="false"
             android:layout_weight="4"/>
@@ -52,7 +52,7 @@
             android:id="@+id/endDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:startYear="2020"
+            android:startYear="2018"
             android:datePickerMode="spinner"
             android:calendarViewShown="false"
             android:layout_weight="4"/>

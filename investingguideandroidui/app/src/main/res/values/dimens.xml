@@ -6,7 +6,7 @@
     <dimen name="tab_vertical_margin">400dp</dimen>
     <dimen name="search_menu_button_width">150sp</dimen>
     <dimen name="search_menu_button_height">70sp</dimen>
-    <dimen name="datePickerLabelWidth">0dp</dimen>
+    <dimen name="datePickerLabelWidth">150dp</dimen>
 </resources>
 
 

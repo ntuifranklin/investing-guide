@@ -110,5 +110,9 @@ class Security {
         return pricePerWeek
     }
 
+    override fun toString() : String {
+        return "${jsonRawObject}"
+    }
+
 
 }
