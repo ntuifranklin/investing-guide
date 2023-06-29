@@ -12,9 +12,9 @@
         android:id="@+id/card_view"
         android:theme="@style/SecurityCardView"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="1dp">
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="310dp">
 
         <TableLayout
             android:layout_width="match_parent"

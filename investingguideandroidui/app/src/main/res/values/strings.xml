@@ -9,4 +9,8 @@
     <string name="search_button_label">Search</string>
     <string name="security_menu_filter_title">Filter Securities To Search For</string>
     <string name="return_main_activity_button_label">Return To Previous Page</string>
+    <string name="no_cmb_label">NO CMB FOR THE SELECTED TIMEFRAME</string>
+    <string name="no_frn_label">NO FRN FOR THE SELECTED TIMEFRAME</string>
+    <string name="no_tips_label">NO TIPS FOR THE SELECTED TIMEFRAME</string>
+    <string name="no_notes_label"> </string>
 </resources>

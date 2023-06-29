@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     val securityType : String = "Bill"
     var LOG_TAG : String = "SUPPOSED_TO_BE_LOGGED_TAGGED"
-    var APP_UNIQUE_ID : String = "cbhsuisnzdfui2378348347647641edsjhsh"
     private lateinit var securities : ArrayList<Security>
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var pref : SharedPreferences
@@ -84,8 +83,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         endDatePicker = findViewById(R.id.endDate)
 
         //retrieve any saved data
-        pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
-        editor = pref.edit()
 
 
     }
@@ -176,9 +173,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             var jsonParser : JsonParser = JsonParser()
             this.webResult = webResult
 
+            pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
+            editor = pref.edit()
             editor.putString(SAVED_WEB_RESULT_KEY, this.webResult)
             editor.commit()
 
+
+            Log.w(LOG_TAG_EXTERIOR,"Received From The Internet : ${webResult}")
             goToSecuritiesViewActivities()
         }  catch ( e: JSONException) {
 
@@ -191,7 +192,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     fun goToSecuritiesViewActivities( ) {
         securitiesViewIntent = Intent( this, SecuritiesViewActivity::class.java )
-        securitiesViewIntent.putExtra(WEB_RESULT_KEY, webResult)
         startActivity(securitiesViewIntent)
 
     }
@@ -253,6 +253,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val AUCTIONED_ROUTE : String = "auctioned"
         val SEARCH_ROUTE : String = "search"
         val WEB_RESULT_KEY : String = "webResult"
+        val APP_UNIQUE_ID : String = "cbhsuisnzdfui2378348347647641edsjhsh"
+
 
     }
 

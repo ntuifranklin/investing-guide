@@ -50,16 +50,17 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.securities_view_main_activity)
         //set onclick listener for return butons
         var topButton : Button = findViewById<Button>(R.id.securities_return_main_button_top)
-
-        var bottomButton : Button = findViewById<Button>(R.id.securities_return_main_button_bottom)
         topButton.setOnClickListener(this)
-        bottomButton.setOnClickListener(this)
 
         try {
 
-            webResult = extras.getStringExtra(MainActivity.WEB_RESULT_KEY).toString()
-            securities = JsonParser().parseString(webResult)
+            pref = getSharedPreferences(MainActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
+
+
+            webResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"{}")!!
+            securities = JsonParser().parseString(webResult!!)
             setPagerAndTabs()
+
         } catch(e : Exception) {
             Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error parsning json object : ${e}. Returning to Previous ")
             finish()

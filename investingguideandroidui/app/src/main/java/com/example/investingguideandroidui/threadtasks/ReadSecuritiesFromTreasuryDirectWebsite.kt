@@ -29,7 +29,7 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
 
     override fun run () {
         super.run()
-        var displayTask : DisplayListOfSecurities = DisplayListOfSecurities()
+        var displayTask : ProcesAndViewWebResult = ProcesAndViewWebResult()
 
         var tempUrl : String = fromActivity.BASE_URL
 
@@ -65,7 +65,7 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
     }
 
 
-    inner class DisplayListOfSecurities : Runnable {
+    inner class ProcesAndViewWebResult : Runnable {
 
         override fun run() {
             fromActivity.saveWebResult(webResult)
