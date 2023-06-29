@@ -2,5 +2,11 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">40dp</dimen>
+    <dimen name="tab_vertical_margin">400dp</dimen>
+    <dimen name="search_menu_button_width">150sp</dimen>
+    <dimen name="search_menu_button_height">70sp</dimen>
+    <dimen name="datePickerLabelWidth">0dp</dimen>
 </resources>
+
+
