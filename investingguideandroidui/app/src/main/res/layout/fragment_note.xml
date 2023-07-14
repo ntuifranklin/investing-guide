@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
+        android:id="@+id/no_note_textview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
         android:text="@string/no_notes_label"
-        android:textSize="16sp"
+        android:textSize="@dimen/medium_text_sie"
         android:textStyle="bold"/>
 
 </FrameLayout>

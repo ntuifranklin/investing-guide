@@ -55,7 +55,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var endDatePicker: DatePicker
     private lateinit var webResult : String
     private lateinit var securitiesViewIntent : Intent
-
+    private lateinit var securityTypeSpinner : Spinner
+    /*
+    *  Spinner dynamicSpinner = (Spinner) findViewById(R.id.dynamic_spinner);
+    * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -74,8 +77,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // set button width at start
 
         setContentView(R.layout.activity_main)
-
+        securityTypeSpinner = findViewById(R.id.securityTypeSpinner)
+        val securityTypes : Array<String> = resources.getStringArray(R.array.security_types)
+        var arrayAdatper : ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,securityTypes )
         //identify the button to be clicked to search for securities
+        securityTypeSpinner.adapter = arrayAdatper
         searchButton = findViewById(R.id.search_treasury_direct)
         searchButton.setOnClickListener(this)
 
@@ -103,7 +109,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         if (view != null && view == searchButton ) {
-            Log.w(LOG_TAG_EXTERIOR, "Clicked on search button")
+            //Log.w(LOG_TAG_EXTERIOR, "Clicked on search button")
 
             //go online and get securities in JSON
             searchTreasuryDirect()
@@ -167,25 +173,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     fun saveWebResult(webResult : String ) {
 
-        if ( webResult == null && webResult.length < 2)
+        if ( webResult == null && webResult.length == 0)
             return
-        try {
-            var jsonParser : JsonParser = JsonParser()
-            this.webResult = webResult
+        var jsonParser : JsonParser = JsonParser()
+        this.webResult = webResult
 
-            pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
-            editor = pref.edit()
-            editor.putString(SAVED_WEB_RESULT_KEY, this.webResult)
-            editor.commit()
+        pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
+        editor = pref.edit()
+        editor.putString(SAVED_WEB_RESULT_KEY, this.webResult)
+        editor.commit()
 
 
-            Log.w(LOG_TAG_EXTERIOR,"Received From The Internet : ${webResult}")
-            goToSecuritiesViewActivities()
-        }  catch ( e: JSONException) {
-
-            Log.w(LOG_TAG,"JsonParser failing for ${webResult}")
-            finish()
-        }
+        Log.w(LOG_TAG_EXTERIOR,"Received From The Internet : ${webResult}")
+        goToSecuritiesViewActivities()
 
     }
 
