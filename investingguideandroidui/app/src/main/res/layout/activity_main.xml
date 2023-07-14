@@ -1,106 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    >
-    <TableRow>
+    android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="@dimen/datePickerLabelWidth"
-            android:layout_height="wrap_content"
-            android:text="@string/security_menu_filter_title"
-            android:layout_weight="5"
-            android:gravity="center"
-            android:maxLines="1"
-            />
-    </TableRow>
-    <TableRow
-        android:paddingTop="5dp"
-        >
-        <TextView
-            android:layout_width="@dimen/datePickerLabelWidth"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_start_date_label"
-            android:layout_weight="2"
-            android:gravity="center"
-            />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topTopBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.0" />
 
-        <DatePicker
-            android:id="@+id/startDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:startYear="2018"
-            android:datePickerMode="spinner"
-            android:calendarViewShown="false"
-            android:layout_weight="4"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/security_menu_filter_title"
+        android:textAllCaps="true"
+        android:textColor="@color/financial_green_500"
+        app:layout_constraintBottom_toTopOf="@+id/topBorder"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toEndOf="@+id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@+id/topTopBorder"
+        app:layout_constraintVertical_bias="1.0" />
 
-    </TableRow>
-    <TableRow android:paddingTop="5dp">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.03" />
 
-        <TextView
-            android:layout_width="@dimen/datePickerLabelWidth"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_end_date_label"
-            android:layout_weight="2"
-            android:gravity="center"
-            />
-        <DatePicker
-            android:id="@+id/endDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:startYear="2018"
-            android:datePickerMode="spinner"
-            android:calendarViewShown="false"
-            android:layout_weight="4"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.97" />
 
-    </TableRow>
-    <TableRow android:paddingTop="5dp">
-        <TextView
-            android:layout_width="@dimen/datePickerLabelWidth"
-            android:layout_height="wrap_content"
-            android:text="@string/security_search_type"
-            android:layout_weight="2"
-            android:gravity="center"
-            />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/secondLeftBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.27" />
 
-        <RadioGroup
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="@string/filter_start_date_label"
+        app:layout_constraintBottom_toTopOf="@+id/betweenStartDateAndEndDate"
+        app:layout_constraintEnd_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toTopOf="@+id/topBorder" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.03" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/betweenStartDateAndEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/betweenEndDateAndTimeline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/beforeSecurityType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.70" />
+
+
+    <Spinner
+        android:id="@+id/securityTypeSpinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/security_type_label"
+        android:hint="@string/security_type_label"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@+id/betweenTimeLineAndSubmitButton"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintTop_toTopOf="@+id/beforeSecurityType" />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/betweenTimeLineAndSubmitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.97" />
+
+
+    <DatePicker
+        android:id="@+id/startDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:startYear="2018"
+        app:layout_constraintBottom_toTopOf="@+id/betweenStartDateAndEndDate"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintTop_toTopOf="@+id/topBorder" />
+
+    <DatePicker
+        android:id="@+id/endDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:startYear="2018"
+        app:layout_constraintBottom_toTopOf="@+id/betweenEndDateAndTimeline"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintTop_toTopOf="@+id/betweenStartDateAndEndDate" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="@string/filter_end_date_label"
+        app:layout_constraintBottom_toTopOf="@+id/betweenEndDateAndTimeline"
+        app:layout_constraintEnd_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toTopOf="@+id/betweenStartDateAndEndDate" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="@string/security_search_type"
+        app:layout_constraintBottom_toTopOf="@+id/beforeSecurityType"
+        app:layout_constraintEnd_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toTopOf="@+id/betweenEndDateAndTimeline" />
+
+
+    <RadioGroup
+        android:id="@+id/auctionOrSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:checkedButton="@id/auctionedChecked"
+        app:layout_constraintBottom_toTopOf="@+id/beforeSecurityType"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintTop_toTopOf="@+id/betweenEndDateAndTimeline">
+
+        <RadioButton
+            android:id="@+id/auctionedChecked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/auctionOrSearch"
-            >
+            android:text="@string/auctioned_label" />
 
-            <RadioButton
-                android:id="@+id/auctionedChecked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auctioned_label"
-                android:layout_weight="2"
-                android:checked="true"/>
-
-            <RadioButton
-                android:id="@+id/upComingChecked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/upcoming_label"
-                android:layout_weight="2"
-                />
-        </RadioGroup>
-    </TableRow>
-    <TableRow android:paddingTop="5dp">
-        <Button
-            android:id="@+id/search_treasury_direct"
-            android:layout_weight="5"
-            android:background="@color/financial_green_500"
-            android:text="@string/search_button_label"
-            android:gravity="center_horizontal"
-            android:layout_width="@dimen/search_menu_button_width"
+        <RadioButton
+            android:id="@+id/upComingChecked"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            />
-    </TableRow>
+            android:text="@string/upcoming_label" />
+    </RadioGroup>
 
-</TableLayout>
+
+
+    <Button
+        android:id="@+id/search_treasury_direct"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:background="@color/financial_green_500"
+        android:gravity="center"
+        android:text="@string/search_button_label"
+        android:textSize="@dimen/button_text_sie"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBorder"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toTopOf="@+id/betweenTimeLineAndSubmitButton" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/security_type_label"
+        app:layout_constraintBottom_toTopOf="@+id/betweenTimeLineAndSubmitButton"
+        app:layout_constraintEnd_toStartOf="@+id/secondLeftBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toTopOf="@+id/beforeSecurityType" />
+</androidx.constraintlayout.widget.ConstraintLayout>

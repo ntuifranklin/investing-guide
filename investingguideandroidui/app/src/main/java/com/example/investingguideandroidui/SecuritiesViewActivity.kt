@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -26,7 +27,7 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     private var screenHeight : Int = 0
     private var screenWidth : Int = 0
     private lateinit var pages : ViewPager
-    private lateinit var securitiesTabs : TabLayout
+    public lateinit var securitiesTabs : TabLayout
     private lateinit var myTabAdapter : SecurityFragmentPagerAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit  var securities_recycler_view: RecyclerView
@@ -35,11 +36,20 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var removedItems: ArrayList<Int>
     private lateinit var webResult : String
 
+    private var bh : Int = 0
+    private var bw : Int = 0
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var pref : SharedPreferences
-
+    public lateinit var securityTypes : java.util.ArrayList<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        screenWidth = Resources.getSystem( ).displayMetrics.widthPixels
+        screenHeight = Resources.getSystem( ).displayMetrics.heightPixels
+
+        // size of cards
+        bw = (screenWidth.toFloat()*0.8).toInt()
+        bh = (screenHeight/16).toInt()
         var extras = this.intent
         if (extras == null ) {
             Log.w(MainActivity.LOG_TAG_EXTERIOR, "In ${localClassName} Previous Activity is " +
@@ -59,10 +69,13 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
 
             webResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"{}")!!
             securities = JsonParser().parseString(webResult!!)
-            setPagerAndTabs()
+
+
+            displaySecuritiesList(securities)
+
 
         } catch(e : Exception) {
-            Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error parsning json object : ${e}. Returning to Previous ")
+            Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error parsing json object : ${e.printStackTrace()}. Returning to Previous ")
             finish()
         }
 
@@ -70,90 +83,104 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-    fun setPagerAndTabs() {
-        if (securities == null || securities.size == 0)
+
+
+    fun displaySecuritiesList(secs : ArrayList<Security>) {
+        if (secs.size == 0 )
             return
 
-
-        pages = findViewById<ViewPager>(R.id.pages)
-        securitiesTabs = findViewById<TabLayout>(R.id.security_tab_layout)
-        myTabAdapter = SecurityFragmentPagerAdapter(this.supportFragmentManager, this, securities)
-        //first load the list of securities type into an array list of Strings
-        var securityTypes : java.util.ArrayList<String> = java.util.ArrayList<String>()
-        val hm : HashMap<String, Int> = SecurityType().securityTypeMapToInt()
-        for ( (secType:String, secInt: Int) in hm ) {
-            securityTypes.add(secType)
-            var tabTitle: String = secType.uppercase()
-            securitiesTabs.addTab(securitiesTabs.newTab().setText(tabTitle))
-        }
-
-        Log.w(MainActivity.LOG_TAG_EXTERIOR,"All Security Types : ${securityTypes.toString()}")
-        securitiesTabs.setTabGravity(TabLayout.GRAVITY_FILL)
-        pages.adapter = myTabAdapter
-        pages.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(securitiesTabs))
-
-        var tl : TabListener = TabListener()
-        securitiesTabs.addOnTabSelectedListener( tl )
-    }
-
-
-    fun getFrameLayoutFromSecurities(context: Context, secs : java.util.ArrayList<Security>, secType : String? ) : ScrollView? {
-        if (secs.size < 1 || context == null )
-            return null
-
-        screenWidth = Resources.getSystem( ).displayMetrics.widthPixels
-        screenHeight = Resources.getSystem( ).displayMetrics.heightPixels
         var startTop : Int = (screenHeight/11).toInt()
         var verticalGap : Int = (screenHeight/7).toInt()
         var leftMargin : Int = (screenWidth/15).toInt()
         var rightMargin : Int = leftMargin
-        var rl : RelativeLayout = RelativeLayout(context)
+        var rl : RelativeLayout = RelativeLayout(this)
         var currentViewId : Int = 0
         var previousViewId : Int = 0
-        var scrollView : ScrollView = ScrollView(context)
+        var scrollView : ScrollView = ScrollView(this)
+        scrollView.id = View.generateViewId()
+        //add go back button at top
         var scrollViewParams : TableLayout.LayoutParams = TableLayout.LayoutParams(screenWidth, screenHeight)
+
+
+        //rl.addView(b_top, lparams_top_button)
 
         scrollView.layoutParams = scrollViewParams
         var no : Int = 1
         for ( s in secs ) {
-            if ( secType != null && s.getSecurityType().lowercase() != secType.lowercase())
-                continue
-            var top : Int = 0
+            var top : Int = 2
             var increment : Int = 38
             currentViewId = View.generateViewId()
 
-            var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT)
+            var cv : CardView = CardView(this)
+            var rv : RelativeLayout = RelativeLayout(this)
+            var rp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
+            rp.topMargin = bh * no
+            cv.layoutParams =  rp
+            cv.id = currentViewId
+            //rv.setPadding(0, 10, 0, 0)
+
+
+            var cusip : TextView = TextView(this)
+            cusip.setText("CUSIP : " + s.getCusip())
+            var cusipRL :  RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw,bh)
+            cusipRL.topMargin = top
+
+            cv.addView(cusip,cusipRL)
+            var securityType : TextView = TextView(this)
+            securityType.setText("Security Type : " + s.getSecurityType())
+
+            var secRL : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw,bh)
+            top += increment
+            secRL.topMargin = top
+            cv.addView(securityType, secRL)
+
+            var issueDateView : TextView = TextView(this)
+            issueDateView.id = View.generateViewId()
+            issueDateView.setText("Date Issued : " + s.getIssueDate())
+            var tempRL : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
+            tempRL.addRule(RelativeLayout.BELOW, securityType.id)
+            top += increment
+            tempRL.topMargin = top
+            cv.addView(issueDateView, tempRL)
+
+
+            var pricePer100 : TextView = TextView(this)
+            pricePer100.id = View.generateViewId()
+            pricePer100.setText("Price Per 100 :  " + s.getPricePer100().toString())
+
+            var pp100params : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
+            pp100params.addRule(RelativeLayout.BELOW, issueDateView.id)
+            top += increment
+            pp100params.topMargin = top
+            cv.addView(pricePer100, pp100params)
+
+            var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
             lparams.leftMargin = leftMargin
-            lparams.topMargin = 10
-            lparams.bottomMargin = 10
+            lparams.topMargin = 2
+
+
             no += 1
             if (previousViewId != 0 ) {
                 lparams.addRule(RelativeLayout.BELOW, previousViewId)
             }
 
-            var l : View = LayoutInflater.from(this).inflate(R.layout.security_card_view, null)
 
-            l.id = currentViewId
-            var cusipView : TextView = l.findViewById<TextView>(R.id.cusip)
-            //cusipView.id = View.generateViewId()
-            cusipView.text = "CUSIP: " + s.getCusip()
-            var issueDate : TextView = l.findViewById<TextView>(R.id.issueDate)
-            issueDate.text = "Issue Date: " + s.getIssueDate().substring(0,10)
+            cv.setRadius(15f)
+            cv.preventCornerOverlap = true
+            cv.cardElevation = 18f
+            cv.useCompatPadding = true
 
-            var pricePer100 : TextView = l.findViewById<TextView>(R.id.pricePer100)
-            pricePer100.text = "PricePer100: " + s.getPricePer100().toString()
-
-
-            rl.addView(l, lparams)
+            rl.addView(cv, lparams)
 
             previousViewId = currentViewId
-        }
-        scrollView.addView(rl)
-        return scrollView
 
+        }
+
+
+        scrollView.addView(rl)
+        setContentView(scrollView, scrollViewParams)
     }
+
 
     inner class TabListener : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab) {

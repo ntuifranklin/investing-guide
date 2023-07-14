@@ -15,14 +15,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
-    private lateinit var securities : ArrayList<Security>
+
     private lateinit var fromActivity : MainActivity
     private var webResult : String = ""
     private var searchRoute : String = "search"
 
     constructor(activity: MainActivity, search_route : String = "search") {
         this.fromActivity = activity
-        securities = ArrayList<Security>()
+
         searchRoute = search_route
 
     }

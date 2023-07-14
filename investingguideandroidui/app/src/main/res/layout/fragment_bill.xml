@@ -4,11 +4,12 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/no_bill_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="Bill"
-        android:textSize="16sp"
+        android:text="@string/no_bills_label"
+        android:textSize="@dimen/standard_text_sie"
         android:textStyle="bold"/>
 
 </FrameLayout>

@@ -24,21 +24,7 @@ class SecurityFragmentPagerAdapter : FragmentPagerAdapter {
     }
 
     override fun getItem(position: Int): Fragment {
-
-        if ( position == MainActivity.BILL)
-            return BillFragment(fromActivity,securitys)
-        else if ( position == MainActivity.BOND)
-            return BondFragment(fromActivity,securitys)
-        else if ( position == MainActivity.CMB )
-            return CmbFragment(fromActivity,securitys)
-        else if (position == MainActivity.FRN)
-            return FrnFragment(fromActivity,securitys)
-        else if (position  == MainActivity.TIPS)
-            return TipsFragment(fromActivity,securitys)
-        else
-            return NoteFragment(fromActivity,securitys)
-
-
+            return DisplaySecurityCardFragment(fromActivity,securitys, position)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

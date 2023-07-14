@@ -14,7 +14,14 @@
         <Button
             android:id="@+id/securities_return_main_button_top"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:text="@string/return_main_activity_button_label"
+            />
+
+        <Button
+            android:id="@+id/securities_return_main_button_bottom"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="@string/return_main_activity_button_label"
             />
     </LinearLayout>
@@ -27,7 +34,7 @@
         <androidx.viewpager.widget.ViewPager
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pages"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/grey_300">
 

@@ -1,6 +1,8 @@
 package com.example.investingguideandroidui.tabadapters
 
+
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +15,17 @@ import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.utilities.SecurityType
 
-class BillFragment : Fragment {
+class DisplaySecurityCardFragment : Fragment {
 
     public final lateinit var fromActivity: SecuritiesViewActivity
-
+    var securityId: Int = 0
     public lateinit var secures : ArrayList<Security>
-    constructor(from: SecuritiesViewActivity, secs: ArrayList<Security>) {
+    lateinit var secType : String
+    constructor(from: SecuritiesViewActivity, secs: ArrayList<Security>, secId: Int) {
         fromActivity = from
         secures = secs
+        securityId = secId
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"Received these in DisplayFragment ${secures}")
 
     }
 
@@ -34,15 +39,28 @@ class BillFragment : Fragment {
 
         var ly : FrameLayout =
             inflater.inflate(R.layout.fragment_bill, container, false) as FrameLayout
-        var secType : String = ""
-        var hm : HashMap<String,Int> = SecurityType().securityTypeMapToInt()
-        for ( (secT:String,secId:Int) in hm ){
-            if (secId == MainActivity.BILL)
-                secType = secT
+        secType = ""
+        if (securityId == MainActivity.BILL)
+        {
+            secType = "bill"
+        } else if  (securityId == MainActivity.NOTE)
+        {
+            secType = "note"
+        } else if  (securityId == MainActivity.TIPS)
+        {
+            secType = "tips"
+        } else if  (securityId == MainActivity.CMB)
+        {
+            secType = "cmb"
+        } else if  (securityId == MainActivity.FRN)
+        {
+            secType = "frn"
+        } else if  (securityId == MainActivity.BOND)
+        {
+            secType = "bond"
         }
 
-        var billsView : ScrollView? = fromActivity.getFrameLayoutFromSecurities(fromActivity,secures,secType)
-        ly!!.addView(billsView!!)
+
         return ly
     }
 
