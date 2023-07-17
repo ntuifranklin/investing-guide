@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Investingguideandroidui" parent="Theme.Material3.DayNight">
         <!-- Primary brand color. -->
@@ -19,10 +19,12 @@
         <item name="cardElevation">20sp</item>
         <item name="useCompatPadding">true</item>
         <item name="cardBackgroundColor">@color/cardview_dark_background</item>
-        <item name="android:layout_width">@dimen/left_right_margin_column</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">sans-serif-thick</item>
         <item name="android:textStyle">normal</item>
-
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:checkable">true</item>
     </style>
 </resources>
