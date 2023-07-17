@@ -174,6 +174,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if ( webResult == null && webResult.length == 0)
             return
         var jsonParser : JsonParser = JsonParser()
+        securities = jsonParser.parseString(webResult)
         this.webResult = webResult
 
         pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)

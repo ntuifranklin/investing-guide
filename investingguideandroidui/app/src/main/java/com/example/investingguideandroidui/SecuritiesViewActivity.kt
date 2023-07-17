@@ -51,15 +51,14 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         // size of cards
         bw = (screenWidth.toFloat()*0.8).toInt()
         bh = (screenHeight/16).toInt()
-        var extras = this.intent
-        if (extras == null ) {
-            Log.w(MainActivity.LOG_TAG_EXTERIOR, "In ${localClassName} Previous Activity is " +
-                    "supposed to pass data to this Activity. Failed, returning ")
-            finish()
-        }
+        //set behavior of buttons top and bottom
 
+        setContentView(R.layout.display_securities_view)
+        var btnTop : Button = findViewById<Button>(R.id.return_search_menu_top_button)
 
-
+        var btnBottom : Button = findViewById<Button>(R.id.return_search_menu_bottom_button)
+        btnTop.setOnClickListener(this)
+        btnBottom.setOnClickListener(this)
         try {
 
             pref = getSharedPreferences(MainActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
@@ -68,24 +67,19 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
             webResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"{}")!!
             securities = JsonParser().parseString(webResult!!)
 
-            setContentView(R.layout.display_securities_view)
-            // set onclick listener for return buttons
             securities_recycler_view = findViewById(R.id.securities_recycler_view)
-            securities_recycler_view.layoutManager = LinearLayoutManager(this)
             securityAdapter = SecurityAdapter(securities)
-            securities_recycler_view.adapter = securityAdapter
 
+            securities_recycler_view.adapter = securityAdapter
+            securities_recycler_view.layoutManager = LinearLayoutManager(this)
 
         } catch(e : Exception) {
             Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error parsing json object : ${e.printStackTrace()}. Returning to Previous ")
             finish()
         }
 
+
     }
-
-
-
-
 
     fun displaySecuritiesList(secs : ArrayList<Security>) {
         if (secs.size == 0 )

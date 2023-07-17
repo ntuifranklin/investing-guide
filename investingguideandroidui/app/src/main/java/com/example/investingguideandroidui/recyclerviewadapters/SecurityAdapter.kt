@@ -1,24 +1,24 @@
 package com.example.investingguideandroidui.recyclerviewadapters
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.R
 import com.example.investingguideandroidui.models.Security
 import java.util.*
 
 
 class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
-    var securities : ArrayList<Security>
+    lateinit var securities : ArrayList<Security>
 
     constructor(securities : ArrayList<Security>) {
-        if (securities != null )
-            this.securities = securities
-        else
-            this.securities = ArrayList<Security>()
+
+        this.securities = securities
     }
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -38,18 +38,18 @@ class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
     }
 
     override fun getItemCount(): Int {
-        return securities.size
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"item count returns ${securities.size}")
+        return this.securities.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if ( securities!= null && securities.size > 0 ) {
 
-            val security : Security = securities[position]
-            holder.issueDate.text = security.getIssueDate()
-            holder.cusipTv.text = security.getCusip()
-            holder.securityType.text = security.getSecurityType()
-            holder.auctionDate.text = security.getAuctionDate()
-        }
-
+        val security : Security = securities[position]
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"item onBindViewHolder ${security.toString()}")
+        holder.issueDate.text = "Issue Date : " + security.getIssueDate()
+        holder.cusipTv.text =  "CUSIP : " + security.getCusip()
+        holder.securityType.text =  "Security Type : " + security.getSecurityType()
+        holder.auctionDate.text =  "Auction Date : " +security.getAuctionDate()
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"In SecurityAdapter: size of securities : ${securities.size}")
     }
 }

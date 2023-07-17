@@ -1,7 +1,5 @@
 package com.example.investingguideandroidui.models
-
 import com.example.investingguideandroidui.utilities.SecurityTermToDays
-
 
 class Security {
     private lateinit var jsonRawObject : String

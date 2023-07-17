@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
-    android:theme="@style/SecurityCardView"
-    android:layout_height="0dp"
-    android:layout_width="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/cusip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-            <TextView
-                android:id="@+id/securityType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/issueDate"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        android:theme="@style/SecurityCardView"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
+        <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/auctionDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            />
-
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+            android:orientation="horizontal">
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/cusip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/securityType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/issueDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/auctionDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    />
+            </TableRow>
+        </TableLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

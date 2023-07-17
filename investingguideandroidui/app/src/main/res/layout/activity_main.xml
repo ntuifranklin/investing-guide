@@ -199,10 +199,10 @@
         android:gravity="center"
         android:text="@string/search_button_label"
         android:textSize="@dimen/button_text_size"
-        app:layout_constraintBottom_toTopOf="@id/bottomBorder"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="@id/betweenTimeLineAndSubmitButton" />
+        app:layout_constraintTop_toTopOf="@id/betweenTimeLineAndSubmitButton"
+        app:layout_constraintBottom_toTopOf="@id/bottomBorder"/>
 
     <TextView
         android:id="@+id/textView4"
