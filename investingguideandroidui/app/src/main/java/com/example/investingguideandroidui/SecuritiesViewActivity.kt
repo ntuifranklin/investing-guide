@@ -5,20 +5,21 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.investingguideandroidui.models.Security
+import com.example.investingguideandroidui.recyclerviewadapters.SecurityAdapter
 import com.example.investingguideandroidui.tabadapters.SecurityFragmentPagerAdapter
 import com.example.investingguideandroidui.utilities.JsonParser
-import com.example.investingguideandroidui.utilities.SecurityType
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
-import java.util.HashMap
+import java.util.*
 
 
 class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
@@ -30,17 +31,17 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     public lateinit var securitiesTabs : TabLayout
     private lateinit var myTabAdapter : SecurityFragmentPagerAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
-    private lateinit  var securities_recycler_view: RecyclerView
+    private lateinit var securities_recycler_view : RecyclerView
     private lateinit var securities: ArrayList<Security>
     private lateinit var myOnClickListener: View.OnClickListener
     private lateinit var removedItems: ArrayList<Int>
     private lateinit var webResult : String
-
     private var bh : Int = 0
     private var bw : Int = 0
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var pref : SharedPreferences
     public lateinit var securityTypes : java.util.ArrayList<String>
+    lateinit var securityAdapter : SecurityAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,18 +51,14 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         // size of cards
         bw = (screenWidth.toFloat()*0.8).toInt()
         bh = (screenHeight/16).toInt()
-        var extras = this.intent
-        if (extras == null ) {
-            Log.w(MainActivity.LOG_TAG_EXTERIOR, "In ${localClassName} Previous Activity is " +
-                    "supposed to pass data to this Activity. Failed, returning ")
-            finish()
-        }
+        //set behavior of buttons top and bottom
 
-        setContentView(R.layout.securities_view_main_activity)
-        //set onclick listener for return butons
-        var topButton : Button = findViewById<Button>(R.id.securities_return_main_button_top)
-        topButton.setOnClickListener(this)
+        setContentView(R.layout.display_securities_view)
+        var btnTop : Button = findViewById<Button>(R.id.return_search_menu_top_button)
 
+        var btnBottom : Button = findViewById<Button>(R.id.return_search_menu_bottom_button)
+        btnTop.setOnClickListener(this)
+        btnBottom.setOnClickListener(this)
         try {
 
             pref = getSharedPreferences(MainActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
@@ -70,20 +67,19 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
             webResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"{}")!!
             securities = JsonParser().parseString(webResult!!)
 
+            securities_recycler_view = findViewById(R.id.securities_recycler_view)
+            securityAdapter = SecurityAdapter(securities)
 
-            displaySecuritiesList(securities)
-
+            securities_recycler_view.adapter = securityAdapter
+            securities_recycler_view.layoutManager = LinearLayoutManager(this)
 
         } catch(e : Exception) {
             Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error parsing json object : ${e.printStackTrace()}. Returning to Previous ")
             finish()
         }
 
+
     }
-
-
-
-
 
     fun displaySecuritiesList(secs : ArrayList<Security>) {
         if (secs.size == 0 )
@@ -101,79 +97,56 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         //add go back button at top
         var scrollViewParams : TableLayout.LayoutParams = TableLayout.LayoutParams(screenWidth, screenHeight)
 
+        var layoutInflater : LayoutInflater = LayoutInflater.from(this)
 
-        //rl.addView(b_top, lparams_top_button)
-
+        previousViewId = -1
         scrollView.layoutParams = scrollViewParams
         var no : Int = 1
         for ( s in secs ) {
-            var top : Int = 2
-            var increment : Int = 38
             currentViewId = View.generateViewId()
+            var lineLayout : LinearLayout = LinearLayout(this)
 
-            var cv : CardView = CardView(this)
-            var rv : RelativeLayout = RelativeLayout(this)
-            var rp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
-            rp.topMargin = bh * no
-            cv.layoutParams =  rp
+            var cv : MaterialCardView = MaterialCardView(ContextThemeWrapper(this, R.style.SecurityCardView))
             cv.id = currentViewId
-            //rv.setPadding(0, 10, 0, 0)
-
-
+            var relativeLayoutParams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
             var cusip : TextView = TextView(this)
+            //cusip.layoutParams = linearLayoutParams
             cusip.setText("CUSIP : " + s.getCusip())
-            var cusipRL :  RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw,bh)
-            cusipRL.topMargin = top
+            cusip.id = View.generateViewId()
 
-            cv.addView(cusip,cusipRL)
+            var cusiplp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+
+
+            cv.addView(cusip, cusiplp)
+
+
             var securityType : TextView = TextView(this)
+            securityType.id = View.generateViewId()
             securityType.setText("Security Type : " + s.getSecurityType())
 
-            var secRL : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw,bh)
-            top += increment
-            secRL.topMargin = top
-            cv.addView(securityType, secRL)
+            var securityTypelp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+             securityTypelp.addRule(RelativeLayout.BELOW, cusip.id)
+            //securityType.layoutParams = linearLayoutParams
+
+            cv.addView(securityType, securityTypelp)
+
+
+            var issueDatelp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
 
             var issueDateView : TextView = TextView(this)
             issueDateView.id = View.generateViewId()
             issueDateView.setText("Date Issued : " + s.getIssueDate())
-            var tempRL : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
-            tempRL.addRule(RelativeLayout.BELOW, securityType.id)
-            top += increment
-            tempRL.topMargin = top
-            cv.addView(issueDateView, tempRL)
+            issueDatelp.addRule(RelativeLayout.BELOW,securityType.id)
+            //issueDateView.layoutParams = linearLayoutParams
 
+            cv.addView(issueDateView, issueDatelp)
+            if (previousViewId != -1 ) {
+                relativeLayoutParams.addRule(RelativeLayout.BELOW,previousViewId)
 
-            var pricePer100 : TextView = TextView(this)
-            pricePer100.id = View.generateViewId()
-            pricePer100.setText("Price Per 100 :  " + s.getPricePer100().toString())
-
-            var pp100params : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(bw, bh)
-            pp100params.addRule(RelativeLayout.BELOW, issueDateView.id)
-            top += increment
-            pp100params.topMargin = top
-            cv.addView(pricePer100, pp100params)
-
-            var lparams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
-            lparams.leftMargin = leftMargin
-            lparams.topMargin = 2
-
-
-            no += 1
-            if (previousViewId != 0 ) {
-                lparams.addRule(RelativeLayout.BELOW, previousViewId)
             }
-
-
-            cv.setRadius(15f)
-            cv.preventCornerOverlap = true
-            cv.cardElevation = 18f
-            cv.useCompatPadding = true
-
-            rl.addView(cv, lparams)
-
             previousViewId = currentViewId
-
+            relativeLayoutParams.topMargin = 2
+            rl.addView(cv,relativeLayoutParams)
         }
 
 

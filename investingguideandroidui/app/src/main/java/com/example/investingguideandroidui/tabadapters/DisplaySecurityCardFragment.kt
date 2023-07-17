@@ -14,6 +14,7 @@ import com.example.investingguideandroidui.R
 import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.utilities.SecurityType
+import java.util.*
 
 class DisplaySecurityCardFragment : Fragment {
 

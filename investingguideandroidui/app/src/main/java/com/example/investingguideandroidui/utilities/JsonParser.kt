@@ -39,6 +39,7 @@ class JsonParser {
                security.setIssueDate(securityObject.getString("issueDate"))
                security.setCusip(securityObject.getString("cusip"))
 
+               security.setAuctionDate(securityObject.getString("auctionDate"))
                securities.add(security)
 
            } catch (e : JSONException) {

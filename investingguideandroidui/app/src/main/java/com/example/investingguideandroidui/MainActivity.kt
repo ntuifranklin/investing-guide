@@ -14,14 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.example.investingguideandroidui.models.Security
-import com.example.investingguideandroidui.tabadapters.SecurityFragmentPagerAdapter
 import com.example.investingguideandroidui.threadtasks.ReadSecuritiesFromTreasuryDirectWebsite
 import com.example.investingguideandroidui.utilities.JsonParser
-import com.example.investingguideandroidui.utilities.SecurityType
-import com.google.android.material.tabs.TabLayout
-import org.json.JSONException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period
@@ -45,7 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     val issueDateFieldName : String = "issueDate"
     val auctionDateFieldName : String = "auctionDate"
 
-    val securityType : String = "Bill"
+    public var securityType : String = "Bond"
     var LOG_TAG : String = "SUPPOSED_TO_BE_LOGGED_TAGGED"
     private lateinit var securities : ArrayList<Security>
     private lateinit var editor : SharedPreferences.Editor
@@ -79,7 +74,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         securityTypeSpinner = findViewById(R.id.securityTypeSpinner)
         val securityTypes : Array<String> = resources.getStringArray(R.array.security_types)
-        var arrayAdatper : ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,securityTypes )
+        var arrayAdatper : ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,securityTypes )
         //identify the button to be clicked to search for securities
         securityTypeSpinner.adapter = arrayAdatper
         searchButton = findViewById(R.id.search_treasury_direct)
@@ -129,11 +124,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         startDate  = "${startYear}-${startMonth}-${startDay}"
         endDate = "${endYear}-${endMonth}-${endDay}"
 
-        var grpBtn : RadioGroup = findViewById(R.id.auctionOrSearch)
-        if (grpBtn == null )
+        var auctionOrSearchBtn : RadioGroup = findViewById(R.id.auctionOrSearch)
+        if (auctionOrSearchBtn == null )
             return
 
-        var checkedButtonId : Int = grpBtn.checkedRadioButtonId
+        var checkedButtonId : Int = auctionOrSearchBtn.checkedRadioButtonId
         var btnChecked : Button = findViewById(checkedButtonId)
         if (btnChecked == null)
             return
@@ -141,7 +136,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (btnChecked.id == R.id.auctionedChecked)
             searchRoute = AUCTIONED_ROUTE
         else if (btnChecked.id == R.id.upComingChecked)
-            searchRoute = SEARCH_ROUTE
+            searchRoute = DEFAULT_SEARCH_ROUTE
+        var stxtv : TextView = securityTypeSpinner.selectedView as TextView
+        securityType = stxtv.text.toString()
+
 
         var taskThread : ReadSecuritiesFromTreasuryDirectWebsite =
             ReadSecuritiesFromTreasuryDirectWebsite(this, search_route=searchRoute)
@@ -157,8 +155,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             return
         Log.w(t, "########### Testing : $title ############## ")
         var s : String = "note"
-        Log.w(t, "s.uppercase : ${s.uppercase()}, s : $s")
-        Log.w(t, "s.toUpperCase : ${s.toUpperCase()}, s : $s")
+        //Log.w(t, "s.uppercase : ${s.uppercase()}, s : $s")
+        //Log.w(t, "s.toUpperCase : ${s.toUpperCase()}, s : $s")
 
 
         Log.w(t, "########### End of Testing ############## ")
@@ -176,6 +174,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if ( webResult == null && webResult.length == 0)
             return
         var jsonParser : JsonParser = JsonParser()
+        securities = jsonParser.parseString(webResult)
         this.webResult = webResult
 
         pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
@@ -251,7 +250,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val TIPS : Int = 4
         val CMB : Int = 5
         val AUCTIONED_ROUTE : String = "auctioned"
-        val SEARCH_ROUTE : String = "search"
+        val DEFAULT_SEARCH_ROUTE : String = "search"
         val WEB_RESULT_KEY : String = "webResult"
         val APP_UNIQUE_ID : String = "cbhsuisnzdfui2378348347647641edsjhsh"
 

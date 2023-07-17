@@ -12,7 +12,6 @@ import com.example.investingguideandroidui.SecuritiesViewActivity
 import java.io.InputStream
 import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
 
@@ -38,6 +37,8 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
         //tempUrl += "&securityType=" + MainActivity.securityType
         tempUrl += "&startDate=" + fromActivity.startDate
         tempUrl += "&endDate=" + fromActivity.endDate
+        if (fromActivity.securityType != null && fromActivity.securityType.length > 0)
+            tempUrl += "&securityType=${fromActivity.securityType}"
         if (searchRoute == MainActivity.AUCTIONED_ROUTE)
             tempUrl += "&dateFieldName=" + fromActivity.auctionDateFieldName
         else
@@ -56,7 +57,7 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
             inputStream.close()
 
 
-        } catch ( e: JSONException) {
+        } catch ( e: Exception) {
             Log.w(fromActivity.LOG_TAG, "Error in Class : ${this.name}, Thread class pulling data from remote server")
 
         }

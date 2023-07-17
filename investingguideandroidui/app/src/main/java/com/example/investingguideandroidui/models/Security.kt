@@ -1,7 +1,5 @@
 package com.example.investingguideandroidui.models
-
 import com.example.investingguideandroidui.utilities.SecurityTermToDays
-
 
 class Security {
     private lateinit var jsonRawObject : String
@@ -12,6 +10,7 @@ class Security {
     private var pricePerWeek : Double = 0.0
     private var pricePerDay : Double = 0.0
     private var securityTerm : String = "0-Week"
+    private var auctionDate : String = ""
 
 
     constructor() : this("1970-01-01", 99.65, "{}") {
@@ -36,6 +35,10 @@ class Security {
         cusip = c
     }
 
+
+    fun setAuctionDate(auctionDate : String) {
+        this.auctionDate = auctionDate
+    }
 
     fun setJsonRawObject(rawJson: String) {
         jsonRawObject = rawJson
@@ -83,6 +86,10 @@ class Security {
 
     fun getIssueDate() : String {
         return issueDate
+    }
+
+    fun getAuctionDate() : String {
+        return this.auctionDate
     }
 
     fun getPricePer100() : Double  {

@@ -15,6 +15,7 @@
     <string name="no_notes_label">NO NOTES FOR THE SELECTED TIMEFRAME</string>
     <string name="no_bills_label">NO BILLS FOR THE SELECTED TIMEFRAME</string>
     <string name="security_type_label">Security Type</string>
+    <string name="security_type_spinner_description">Select A Security Type To View</string>
     <string name="bill_label">Bill</string>
     <string name="bond_label">Bond</string>
     <string name="tips_label">Tips</string>
@@ -22,11 +23,11 @@
     <string name="frn_label">FRN</string>
     <string name="note_label">Note</string>
     <string-array name="security_types">
-        <item>@string/bond_label</item>
         <item>@string/bill_label</item>
-        <item>@string/tips_label</item>
-        <item>@string/cmb_label</item>
-        <item>@string/frn_label</item>
+        <item>@string/bond_label</item>
         <item>@string/note_label</item>
+        <item>@string/tips_label</item>
+        <item>@string/frn_label</item>
+        <item>@string/cmb_label</item>
     </string-array>
 </resources>
