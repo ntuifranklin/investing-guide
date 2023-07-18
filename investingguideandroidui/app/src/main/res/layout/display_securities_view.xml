@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:visibility="visible"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_below="@id/return_search_menu_top_button"
         />
 
