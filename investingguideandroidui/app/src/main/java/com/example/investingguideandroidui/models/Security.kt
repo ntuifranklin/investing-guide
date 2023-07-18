@@ -1,5 +1,9 @@
 package com.example.investingguideandroidui.models
+import android.util.Log
+import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.utilities.SecurityTermToDays
+import org.json.JSONException
+import org.json.JSONObject
 
 class Security {
     private lateinit var jsonRawObject : String
@@ -42,7 +46,30 @@ class Security {
 
     fun setJsonRawObject(rawJson: String) {
         jsonRawObject = rawJson
+    }
 
+    fun parseJsonObject() {
+        if (jsonRawObject == null )
+            return
+
+        try {
+            var securityObject : JSONObject = JSONObject(jsonRawObject)
+
+
+            var st : String = securityObject.getString("securityType")
+            setSecurityType(st)
+            var pp100: String = securityObject.getString("pricePer100")
+            if (pp100 != null && pp100.length > 0 )
+                setPricePer100(pp100.toDouble())
+            else
+                setPricePer100(0.0)
+            setIssueDate(securityObject.getString("issueDate"))
+            setAuctionDate(securityObject.getString("auctionDate"))
+            setCusip(securityObject.getString("cusip"))
+
+        } catch (e : JSONException ){
+            Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error in Class : Security : ${e.printStackTrace()}")
+        }
     }
     fun setIssueDate(issueDate: String ) {
         this.issueDate = issueDate

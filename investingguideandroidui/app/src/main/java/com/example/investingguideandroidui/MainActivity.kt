@@ -12,15 +12,15 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.example.investingguideandroidui.models.Security
-import com.example.investingguideandroidui.threadtasks.ReadSecuritiesFromTreasuryDirectWebsite
-import com.example.investingguideandroidui.utilities.JsonParser
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period
 import java.util.*
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewSecurities : Button
@@ -35,12 +35,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var daysDifference : Period
     lateinit var date : LocalDate
     val BASE_URL : String = "https://www.treasurydirect.gov/TA_WS/securities"
+    var searchRoute : String = AUCTIONED_ROUTE
     val format : String = "json"
-    val dateFieldName : String = "issueDate"
+    var dateFieldName : String = "issueDate"
     val issueDateFieldName : String = "issueDate"
     val auctionDateFieldName : String = "auctionDate"
 
-    public var securityType : String = "Bond"
     var LOG_TAG : String = "SUPPOSED_TO_BE_LOGGED_TAGGED"
     private lateinit var securities : ArrayList<Security>
     private lateinit var editor : SharedPreferences.Editor
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var webResult : String
     private lateinit var securitiesViewIntent : Intent
     private lateinit var securityTypeSpinner : Spinner
-    private lateinit var progressBar: ProgressBar
+
     /*
     *  Spinner dynamicSpinner = (Spinner) findViewById(R.id.dynamic_spinner);
     * */
@@ -73,65 +73,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // set button width at start
 
         setContentView(R.layout.activity_main)
+        createAd()
 
-        //progress bar update
-        progressBar = findViewById(R.id.loadingDataFromInternetProgressBar)
-        hideProgressBar()
-
-        securityTypeSpinner = findViewById(R.id.securityTypeSpinner)
-        val securityTypes : Array<String> = resources.getStringArray(R.array.security_types)
-        var arrayAdatper : ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,securityTypes )
-        //identify the button to be clicked to search for securities
-        securityTypeSpinner.adapter = arrayAdatper
         searchButton = findViewById(R.id.search_treasury_direct)
         searchButton.setOnClickListener(this)
 
         startDatePicker = findViewById(R.id.startDate)
         endDatePicker = findViewById(R.id.endDate)
 
-        //retrieve any saved data
-
 
     }
 
-    fun hideProgressBar() {
-        if (progressBar != null ) {
-            progressBar.visibility = View.INVISIBLE
-        }
 
-    }
-
-    fun showProgressBar() {
-
-        if (progressBar != null ) {
-            progressBar.visibility = View.VISIBLE
-        }
-    }
-
-    fun loadSavedResult() {
-
-        if (pref == null )
-            pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
-
-        var oldWebResult : String? = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"")
-        if (oldWebResult != null && oldWebResult!!.length > 0 )  {
-            Log.w(LOG_TAG,"Using old data saved")
-            saveWebResult(oldWebResult!!)
-
-        }
-    }
 
 
     override fun onClick(view: View?) {
         if (view != null && view == searchButton ) {
-            //Log.w(LOG_TAG_EXTERIOR, "Clicked on search button")
 
-            //go online and get securities in JSON
-            searchTreasuryDirect()
+            searchRepositoryAndLoadResult()
         }
 
     }
-    fun searchTreasuryDirect() {
+    fun searchRepositoryAndLoadResult() {
 
         var startYear : String = startDatePicker.year.toString()
         var startMonth : String = (startDatePicker.month + 1).toString()
@@ -143,6 +106,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         startDate  = "${startYear}-${startMonth}-${startDay}"
         endDate = "${endYear}-${endMonth}-${endDay}"
+        formatter = SimpleDateFormat("yyyy-MM-dd")
+        startDate = formatter.format(formatter.parse(startDate))
+        endDate = formatter.format(formatter.parse(endDate))
+
+
+
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"start date : ${startDate} end date : ${endDate}")
 
         var auctionOrSearchBtn : RadioGroup = findViewById(R.id.auctionOrSearch)
         if (auctionOrSearchBtn == null )
@@ -152,20 +122,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var btnChecked : Button = findViewById(checkedButtonId)
         if (btnChecked == null)
             return
-        var searchRoute : String = AUCTIONED_ROUTE
-        if (btnChecked.id == R.id.auctionedChecked)
+
+        if (btnChecked.id == R.id.auctionedChecked){
+            dateFieldName = auctionDateFieldName
             searchRoute = AUCTIONED_ROUTE
-        else if (btnChecked.id == R.id.upComingChecked)
+        }
+        else if (btnChecked.id == R.id.upComingChecked){
+            dateFieldName = issueDateFieldName
             searchRoute = DEFAULT_SEARCH_ROUTE
-        var stxtv : TextView = securityTypeSpinner.selectedView as TextView
-        securityType = stxtv.text.toString()
 
-        // show progres bar
-        showProgressBar()
+        }
+        securitiesViewIntent = Intent( this, SecuritiesViewActivity::class.java )
+        securitiesViewIntent.putExtra("$INTER_ACTIVITY_START_DATE_KEY",startDate)
+        securitiesViewIntent.putExtra("$INTER_ACTIVITY_END_DATE_KEY",endDate)
+        securitiesViewIntent.putExtra("$DATE_FIELD_NAME_SEARCH_BY_KEY",dateFieldName)
+        securitiesViewIntent.putExtra("$SEARCH_ROUTE_KEY", searchRoute)
 
-        var taskThread : ReadSecuritiesFromTreasuryDirectWebsite =
-            ReadSecuritiesFromTreasuryDirectWebsite(this, search_route=searchRoute)
-        taskThread.start()
+        startActivity(securitiesViewIntent)
 
 
     }
@@ -185,79 +158,33 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    fun setSecuritiesList(securities : ArrayList<Security>) {
-        if ( securities != null )
-            this.securities = securities
-    }
+    fun createAd( ) : Unit {
+        var adView : AdView = findViewById<AdView>(R.id.googleAdvertisement)
 
 
-    fun saveWebResult(webResult : String ) {
+        var adRequestBuilder :AdRequest.Builder = AdRequest.Builder( )
+        /*
+        adRequestBuilder.addKeyword("TreasuryDirect")
+        adRequestBuilder.addKeyword("Treasury Bond")
+        adRequestBuilder.addKeyword("Treasury Bill")
+        adRequestBuilder.addKeyword("Treasury TIPS")
+        adRequestBuilder.addKeyword("Treasury Bond")
 
-        if ( webResult == null && webResult.length == 0)
-            return
-        var jsonParser : JsonParser = JsonParser()
-        securities = jsonParser.parseString(webResult)
-        this.webResult = webResult
-
-        pref = getSharedPreferences(APP_UNIQUE_ID, Context.MODE_PRIVATE)
-        editor = pref.edit()
-        editor.putString(SAVED_WEB_RESULT_KEY, this.webResult)
-        editor.commit()
-
-
-        Log.w(LOG_TAG_EXTERIOR,"Received From The Internet : ${webResult}")
-
-        goToSecuritiesViewActivities()
-
-    }
+         */
+        adRequestBuilder.addKeyword("Bonds")
+        adRequestBuilder.addKeyword("Savings")
+        adRequestBuilder.addKeyword("Investment")
+        adRequestBuilder.addKeyword("Stocks")
+        adRequestBuilder.addKeyword("Notes")
 
 
-    fun goToSecuritiesViewActivities( ) {
+        var adRequest : AdRequest = adRequestBuilder.build()
 
-        //hide progress bar before showing results to user
-        hideProgressBar()
-        securitiesViewIntent = Intent( this, SecuritiesViewActivity::class.java )
-        startActivity(securitiesViewIntent)
-
-    }
-
-
-    inner class CustomFragment : Fragment {
-
-        constructor() {
-
+        try {
+            adView.loadAd(adRequest)
+        } catch( e : Exception) {
+            Log.w(MainActivity.LOG_TAG_EXTERIOR, "Error loading the google ad")
         }
-
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            var frameLayout : FrameLayout = FrameLayout(requireContext())
-
-            return frameLayout
-
-        }
-
-
-    }
-    inner class TabAdapter: FragmentPagerAdapter {
-        private lateinit var context : Context
-        private var totalTabs : Int = 0
-
-        constructor (c : Context, fm : FragmentManager, totalTabs : Int) : super(fm) {
-            context = c
-            this.totalTabs = totalTabs
-        }
-
-        override fun getCount(): Int {
-            return totalTabs
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return CustomFragment()
-        }
-
     }
 
 
@@ -277,9 +204,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val CMB : Int = 5
         val AUCTIONED_ROUTE : String = "auctioned"
         val DEFAULT_SEARCH_ROUTE : String = "search"
+        val SEARCH_ROUTE_KEY : String = "searchRoute"
         val WEB_RESULT_KEY : String = "webResult"
         val APP_UNIQUE_ID : String = "cbhsuisnzdfui2378348347647641edsjhsh"
+        val INTER_ACTIVITY_START_DATE_KEY = "startDate"
+        val INTER_ACTIVITY_END_DATE_KEY = "endDate"
 
+        val DATE_FIELD_NAME_SEARCH_BY_KEY = "dateFieldSearchBy"
+
+        val DEFAULT_DATE_FIELD_NAME_SEARCH_BY_VALUE = "issueDate"
+        val SECURITY_TYPE_KEY = "securityType"
+        val DEFAULT_SECURITY_TYPE = "Bill"
 
     }
 

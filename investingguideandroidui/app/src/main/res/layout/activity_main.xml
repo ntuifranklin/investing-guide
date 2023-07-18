@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.01" />
+        app:layout_constraintGuide_percent="0.02" />
 
     <TextView
         android:layout_width="0dp"
@@ -65,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.03" />
+        app:layout_constraintGuide_percent="0.07" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -73,22 +74,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.30" />
+        app:layout_constraintGuide_percent="0.32" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/betweenEndDateAndTimeline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.58" />
+        app:layout_constraintGuide_percent="0.56" />
 
+    <!--
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/beforeSecurityType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.67" />
+        app:layout_constraintGuide_percent="0.74" />
 
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/security_type_label"
+        app:layout_constraintBottom_toTopOf="@id/betweenTimeLineAndSubmitButton"
+        app:layout_constraintEnd_toStartOf="@id/secondLeftBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="@id/beforeSecurityType" />
 
     <Spinner
         android:id="@+id/securityTypeSpinner"
@@ -101,27 +113,20 @@
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/secondLeftBorder"
         app:layout_constraintTop_toTopOf="@id/beforeSecurityType" />
-
+    -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/betweenTimeLineAndSubmitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.83" />
+        ads:layout_constraintGuide_percent="0.78" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.92" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/finalBottomBorder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.99" />
+        ads:layout_constraintGuide_percent="0.88" />
 
 
     <DatePicker
@@ -159,24 +164,26 @@
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="@id/betweenStartDateAndEndDate" />
 
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/security_search_type"
-        app:layout_constraintBottom_toTopOf="@id/beforeSecurityType"
+        app:layout_constraintBottom_toTopOf="@id/betweenTimeLineAndSubmitButton"
         app:layout_constraintEnd_toStartOf="@id/secondLeftBorder"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="@id/betweenEndDateAndTimeline" />
-
+        app:layout_constraintTop_toTopOf="@id/betweenEndDateAndTimeline"
+         />
 
     <RadioGroup
         android:id="@+id/auctionOrSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:checkedButton="@id/auctionedChecked"
-        app:layout_constraintBottom_toTopOf="@id/beforeSecurityType"
+        app:layout_constraintBottom_toTopOf="@+id/betweenTimeLineAndSubmitButton"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/secondLeftBorder"
         app:layout_constraintTop_toTopOf="@id/betweenEndDateAndTimeline">
@@ -194,8 +201,6 @@
             android:text="@string/upcoming_label" />
     </RadioGroup>
 
-
-
     <Button
         android:id="@+id/search_treasury_direct"
         android:layout_width="0dp"
@@ -204,29 +209,28 @@
         android:gravity="center"
         android:text="@string/search_button_label"
         android:textSize="@dimen/button_text_size"
+        app:layout_constraintBottom_toTopOf="@id/bottomBorder"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="@id/betweenTimeLineAndSubmitButton"
-        app:layout_constraintBottom_toTopOf="@id/bottomBorder"/>
+        app:layout_constraintTop_toBottomOf="@id/betweenTimeLineAndSubmitButton" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/security_type_label"
-        app:layout_constraintBottom_toTopOf="@id/betweenTimeLineAndSubmitButton"
-        app:layout_constraintEnd_toStartOf="@id/secondLeftBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="@id/beforeSecurityType" />
-    <ProgressBar
-        android:id="@+id/loadingDataFromInternetProgressBar"
-        style="?android:attr/progressBarStyleLarge"
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/googleAdvertisement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        app:layout_constraintBottom_toTopOf="@id/finalBottomBorder"
-        app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/bottomBorder"
-        />
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-7397609705602882/7659433639"
+        ads:layout_constraintTop_toBottomOf="@+id/bottomBorder"
+        ads:layout_constraintStart_toEndOf="@id/leftBorder"
+        ads:layout_constraintEnd_toStartOf="@id/rightBorder"
+        ads:layout_constraintBottom_toTopOf="@+id/lastBottomBorder" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lastBottomBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.99" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

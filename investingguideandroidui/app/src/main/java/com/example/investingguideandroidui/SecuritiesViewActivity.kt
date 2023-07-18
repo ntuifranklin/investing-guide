@@ -13,20 +13,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.example.investingguideandroidui.database.DBHandler
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.recyclerviewadapters.SecurityAdapter
 import com.example.investingguideandroidui.tabadapters.SecurityFragmentPagerAdapter
+import com.example.investingguideandroidui.threadtasks.ReadSecuritiesFromTreasuryDirectWebsite
 import com.example.investingguideandroidui.utilities.JsonParser
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
+import org.json.JSONException
 import java.util.*
 
 
 class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
 
-
+    lateinit var startDate : String
+    lateinit var endDate : String
+    lateinit var dbHandler : DBHandler
     private var screenHeight : Int = 0
     private var screenWidth : Int = 0
+
+    val BASE_URL : String = "https://www.treasurydirect.gov/TA_WS/securities"
+    var searchRoute : String = MainActivity.AUCTIONED_ROUTE
+
+    val format : String = "json"
+    var dateFieldName : String = "issueDate"
+    val issueDateFieldName : String = "issueDate"
+    val auctionDateFieldName : String = "auctionDate"
+    public var securityType : String = "Bond"
     private lateinit var pages : ViewPager
     public lateinit var securitiesTabs : TabLayout
     private lateinit var myTabAdapter : SecurityFragmentPagerAdapter
@@ -40,14 +54,15 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     private var bw : Int = 0
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var pref : SharedPreferences
-    public lateinit var securityTypes : java.util.ArrayList<String>
     lateinit var securityAdapter : SecurityAdapter
+    private lateinit var progressBar: ProgressBar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         screenWidth = Resources.getSystem( ).displayMetrics.widthPixels
         screenHeight = Resources.getSystem( ).displayMetrics.heightPixels
-
         // size of cards
         bw = (screenWidth.toFloat()*0.8).toInt()
         bh = (screenHeight/16).toInt()
@@ -59,117 +74,84 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         var btnBottom : Button = findViewById<Button>(R.id.return_search_menu_bottom_button)
         btnTop.setOnClickListener(this)
         btnBottom.setOnClickListener(this)
-        try {
 
-            pref = getSharedPreferences(MainActivity.APP_UNIQUE_ID, Context.MODE_PRIVATE)
+        //progress bar update
+        progressBar = findViewById(R.id.loadingDataFromInternetProgressBar)
+        showProgressBar()
+
+        var extras : Bundle = this.intent.extras!!
+        startDate = extras.getString(MainActivity.INTER_ACTIVITY_START_DATE_KEY,"")
+        endDate = extras.getString(MainActivity.INTER_ACTIVITY_END_DATE_KEY,"")
+        val searchDateFieldNameBy : String = extras.getString(MainActivity.DATE_FIELD_NAME_SEARCH_BY_KEY,MainActivity.DEFAULT_DATE_FIELD_NAME_SEARCH_BY_VALUE)
+        searchRoute = extras.getString(MainActivity.SEARCH_ROUTE_KEY,MainActivity.DEFAULT_SEARCH_ROUTE)
 
 
-            webResult = pref.getString(MainActivity.SAVED_WEB_RESULT_KEY,"{}")!!
-            securities = JsonParser().parseString(webResult!!)
-
-            securities_recycler_view = findViewById(R.id.securities_recycler_view)
-            securityAdapter = SecurityAdapter(securities)
-
-            securities_recycler_view.adapter = securityAdapter
-            securities_recycler_view.layoutManager = LinearLayoutManager(this)
-
-        } catch(e : Exception) {
-            Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error parsing json object : ${e.printStackTrace()}. Returning to Previous ")
-            finish()
+        // pull data from database and show to user
+        dbHandler = DBHandler(this,this)
+        val count : Int = dbHandler.countMatchingRows(startDate=startDate,endDate=endDate)
+        if (count == 0 ) {
+           dbHandler.getDataOnline()
+        }else{
+            securities = dbHandler.readAllBetween(
+                startDate = startDate,
+                endDate = endDate,
+                dateFieldName = searchDateFieldNameBy
+            )
+            displaySecuritiesList(securities)
         }
-
 
     }
 
-    fun displaySecuritiesList(secs : ArrayList<Security>) {
+    fun displaySecuritiesList(secs : ArrayList<Security> = ArrayList<Security>()) {
         if (secs.size == 0 )
             return
+        hideProgressBar()
 
-        var startTop : Int = (screenHeight/11).toInt()
-        var verticalGap : Int = (screenHeight/7).toInt()
-        var leftMargin : Int = (screenWidth/15).toInt()
-        var rightMargin : Int = leftMargin
-        var rl : RelativeLayout = RelativeLayout(this)
-        var currentViewId : Int = 0
-        var previousViewId : Int = 0
-        var scrollView : ScrollView = ScrollView(this)
-        scrollView.id = View.generateViewId()
-        //add go back button at top
-        var scrollViewParams : TableLayout.LayoutParams = TableLayout.LayoutParams(screenWidth, screenHeight)
+        securities = secs
+        securities_recycler_view = findViewById(R.id.securities_recycler_view)
 
-        var layoutInflater : LayoutInflater = LayoutInflater.from(this)
+        securityAdapter = SecurityAdapter(securities)
 
-        previousViewId = -1
-        scrollView.layoutParams = scrollViewParams
-        var no : Int = 1
-        for ( s in secs ) {
-            currentViewId = View.generateViewId()
-            var lineLayout : LinearLayout = LinearLayout(this)
+        securities_recycler_view.adapter = securityAdapter
+        securities_recycler_view.layoutManager = LinearLayoutManager(this)
+        Log.w(MainActivity.LOG_TAG_EXTERIOR,"securities size at time of display : ${securities.size}")
 
-            var cv : MaterialCardView = MaterialCardView(ContextThemeWrapper(this, R.style.SecurityCardView))
-            cv.id = currentViewId
-            var relativeLayoutParams : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
-            var cusip : TextView = TextView(this)
-            //cusip.layoutParams = linearLayoutParams
-            cusip.setText("CUSIP : " + s.getCusip())
-            cusip.id = View.generateViewId()
-
-            var cusiplp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
-
-
-            cv.addView(cusip, cusiplp)
-
-
-            var securityType : TextView = TextView(this)
-            securityType.id = View.generateViewId()
-            securityType.setText("Security Type : " + s.getSecurityType())
-
-            var securityTypelp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
-             securityTypelp.addRule(RelativeLayout.BELOW, cusip.id)
-            //securityType.layoutParams = linearLayoutParams
-
-            cv.addView(securityType, securityTypelp)
-
-
-            var issueDatelp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
-
-            var issueDateView : TextView = TextView(this)
-            issueDateView.id = View.generateViewId()
-            issueDateView.setText("Date Issued : " + s.getIssueDate())
-            issueDatelp.addRule(RelativeLayout.BELOW,securityType.id)
-            //issueDateView.layoutParams = linearLayoutParams
-
-            cv.addView(issueDateView, issueDatelp)
-            if (previousViewId != -1 ) {
-                relativeLayoutParams.addRule(RelativeLayout.BELOW,previousViewId)
-
-            }
-            previousViewId = currentViewId
-            relativeLayoutParams.topMargin = 2
-            rl.addView(cv,relativeLayoutParams)
-        }
-
-
-        scrollView.addView(rl)
-        setContentView(scrollView, scrollViewParams)
     }
 
 
-    inner class TabListener : TabLayout.OnTabSelectedListener {
-        override fun onTabSelected(tab: TabLayout.Tab) {
-            pages!!.currentItem = tab.position
-
+    fun hideProgressBar() {
+        if (progressBar != null ) {
+            progressBar.visibility = View.GONE
         }
 
-        override fun onTabUnselected(tab: TabLayout.Tab?) {
+    }
 
-        }
+    fun showProgressBar() {
 
-        override fun onTabReselected(tab: TabLayout.Tab?) {
-
+        if (progressBar != null ) {
+            progressBar.visibility = View.INVISIBLE
+            progressBar.visibility = View.VISIBLE
         }
     }
 
+
+    fun saveWebResult(webResult : String ) {
+        showProgressBar()
+        if ( webResult == null && webResult.length == 0)
+            return
+        try {
+
+            var jsonParser : JsonParser = JsonParser()
+            securities = jsonParser.parseString(webResult)
+            dbHandler.saveAllSecuritiesAsTransaction(securities)
+            val count : Int = dbHandler.getCountAll()
+            Log.w(MainActivity.LOG_TAG_EXTERIOR,"Count should be greater than 0 : ${count}")
+            hideProgressBar()
+            displaySecuritiesList(securities)
+        } catch ( e : JSONException ) {
+            Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error while parsing json data : ${e.printStackTrace()}")
+        }
+    }
     override fun onClick(view: View?) {
         if( view == null )
             return
