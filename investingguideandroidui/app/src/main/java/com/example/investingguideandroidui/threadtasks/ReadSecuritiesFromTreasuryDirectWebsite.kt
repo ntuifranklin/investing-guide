@@ -33,11 +33,16 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
 
         tempUrl += "/${searchRoute}?"
         tempUrl += "format=" + fromActivity.format
-        //tempUrl += "&securityType=" + MainActivity.securityType
         tempUrl += "&startDate=" + fromActivity.startDate
         tempUrl += "&endDate=" + fromActivity.endDate
+
+        //we pull everything now and not just a particular type
+        /*
+
         if (fromActivity.securityType != null && fromActivity.securityType.length > 0)
             tempUrl += "&securityType=${fromActivity.securityType}"
+        */
+
         if (searchRoute == MainActivity.AUCTIONED_ROUTE)
             tempUrl += "&dateFieldName=" + fromActivity.auctionDateFieldName
         else

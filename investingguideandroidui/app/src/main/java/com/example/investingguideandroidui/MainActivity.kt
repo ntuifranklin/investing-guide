@@ -12,12 +12,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import com.example.investingguideandroidui.database.DBHandler
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.example.investingguideandroidui.models.Security
-import com.example.investingguideandroidui.threadtasks.ReadSecuritiesFromTreasuryDirectWebsite
-import com.example.investingguideandroidui.utilities.JsonParser
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period
@@ -42,7 +40,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     var dateFieldName : String = "issueDate"
     val issueDateFieldName : String = "issueDate"
     val auctionDateFieldName : String = "auctionDate"
-    public var securityType : String = "Bond"
 
     var LOG_TAG : String = "SUPPOSED_TO_BE_LOGGED_TAGGED"
     private lateinit var securities : ArrayList<Security>
@@ -77,12 +74,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_main)
 
-
-        securityTypeSpinner = findViewById(R.id.securityTypeSpinner)
-        val securityTypes : Array<String> = resources.getStringArray(R.array.security_types)
-        var arrayAdatper : ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,securityTypes )
-        //identify the button to be clicked to search for securities
-        securityTypeSpinner.adapter = arrayAdatper
         searchButton = findViewById(R.id.search_treasury_direct)
         searchButton.setOnClickListener(this)
 
@@ -113,6 +104,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         startDate  = "${startYear}-${startMonth}-${startDay}"
         endDate = "${endYear}-${endMonth}-${endDay}"
+        formatter = SimpleDateFormat("yyyy-MM-dd")
+        startDate = formatter.format(formatter.parse(startDate))
+        endDate = formatter.format(formatter.parse(endDate))
+
+
+
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"start date : ${startDate} end date : ${endDate}")
 
         var auctionOrSearchBtn : RadioGroup = findViewById(R.id.auctionOrSearch)
         if (auctionOrSearchBtn == null )
@@ -132,15 +130,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             searchRoute = DEFAULT_SEARCH_ROUTE
 
         }
-        var stxtv : TextView = securityTypeSpinner.selectedView as TextView
-        securityType = stxtv.text.toString()
-
         securitiesViewIntent = Intent( this, SecuritiesViewActivity::class.java )
         securitiesViewIntent.putExtra("$INTER_ACTIVITY_START_DATE_KEY",startDate)
         securitiesViewIntent.putExtra("$INTER_ACTIVITY_END_DATE_KEY",endDate)
         securitiesViewIntent.putExtra("$DATE_FIELD_NAME_SEARCH_BY_KEY",dateFieldName)
         securitiesViewIntent.putExtra("$SEARCH_ROUTE_KEY", searchRoute)
-        securitiesViewIntent.putExtra("${SECURITY_TYPE_KEY}", securityType)
+
         startActivity(securitiesViewIntent)
 
 
@@ -185,23 +180,34 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     }
-    inner class TabAdapter: FragmentPagerAdapter {
-        private lateinit var context : Context
-        private var totalTabs : Int = 0
 
-        constructor (c : Context, fm : FragmentManager, totalTabs : Int) : super(fm) {
-            context = c
-            this.totalTabs = totalTabs
+    fun createAd( ) : Unit {
+        var adView : AdView = findViewById<AdView>(R.id.googleAdvertisement)
+        //var adSize : AdSize = AdSize( AdSize.FULL_WIDTH, AdSize.AUTO_HEIGHT)
+        //adView.setAdSize( adSize )
+        adView.setAdSize(AdSize.BANNER);
+
+        var unitId : String = "ca-app-pub-7397609705602882/7659433639"
+        adView.adUnitId = unitId
+
+        var adRequestBuilder :AdRequest.Builder = AdRequest.Builder( )
+        adRequestBuilder.addKeyword("TreasuryDirect")
+        adRequestBuilder.addKeyword("Treasury Bond")
+        adRequestBuilder.addKeyword("Treasury Bill")
+        adRequestBuilder.addKeyword("Treasury TIPS")
+        adRequestBuilder.addKeyword("Treasury Bond")
+        adRequestBuilder.addKeyword("Bonds")
+        adRequestBuilder.addKeyword("Savings")
+        adRequestBuilder.addKeyword("Investment")
+        adRequestBuilder.addKeyword("Stocks")
+        adRequestBuilder.addKeyword("Notes")
+        var adRequest : AdRequest = adRequestBuilder.build()
+
+        try {
+            adView.loadAd(adRequest)
+        } catch( e : Exception) {
+            Log.w(MainActivity.LOG_TAG_EXTERIOR, "Error loading the google ad")
         }
-
-        override fun getCount(): Int {
-            return totalTabs
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return CustomFragment()
-        }
-
     }
 
 
@@ -232,8 +238,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val DEFAULT_DATE_FIELD_NAME_SEARCH_BY_VALUE = "issueDate"
         val SECURITY_TYPE_KEY = "securityType"
         val DEFAULT_SECURITY_TYPE = "Bill"
-
-
 
     }
 

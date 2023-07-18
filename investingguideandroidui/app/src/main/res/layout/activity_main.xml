@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.01" />
+        app:layout_constraintGuide_percent="0.02" />
 
     <TextView
         android:layout_width="0dp"
@@ -65,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.03" />
+        app:layout_constraintGuide_percent="0.07" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -73,15 +74,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.34" />
+        app:layout_constraintGuide_percent="0.32" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/betweenEndDateAndTimeline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_percent="0.56" />
 
+    <!--
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/beforeSecurityType"
         android:layout_width="wrap_content"
@@ -89,6 +91,16 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.74" />
 
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/security_type_label"
+        app:layout_constraintBottom_toTopOf="@id/betweenTimeLineAndSubmitButton"
+        app:layout_constraintEnd_toStartOf="@id/secondLeftBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="@id/beforeSecurityType" />
 
     <Spinner
         android:id="@+id/securityTypeSpinner"
@@ -101,20 +113,20 @@
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/secondLeftBorder"
         app:layout_constraintTop_toTopOf="@id/beforeSecurityType" />
-
+    -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/betweenTimeLineAndSubmitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
+        app:layout_constraintGuide_percent="0.71" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.99" />
+        app:layout_constraintGuide_percent="0.87" />
 
 
 
@@ -153,24 +165,26 @@
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="@id/betweenStartDateAndEndDate" />
 
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
         android:gravity="center"
         android:text="@string/security_search_type"
-        app:layout_constraintBottom_toTopOf="@id/beforeSecurityType"
+        app:layout_constraintBottom_toTopOf="@id/betweenTimeLineAndSubmitButton"
         app:layout_constraintEnd_toStartOf="@id/secondLeftBorder"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="@id/betweenEndDateAndTimeline" />
-
 
     <RadioGroup
         android:id="@+id/auctionOrSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:checkedButton="@id/auctionedChecked"
-        app:layout_constraintBottom_toTopOf="@id/beforeSecurityType"
+        app:layout_constraintBottom_toTopOf="@+id/betweenTimeLineAndSubmitButton"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/secondLeftBorder"
         app:layout_constraintTop_toTopOf="@id/betweenEndDateAndTimeline">
@@ -188,8 +202,6 @@
             android:text="@string/upcoming_label" />
     </RadioGroup>
 
-
-
     <Button
         android:id="@+id/search_treasury_direct"
         android:layout_width="0dp"
@@ -203,13 +215,16 @@
         app:layout_constraintTop_toBottomOf="@id/betweenTimeLineAndSubmitButton"
         app:layout_constraintBottom_toTopOf="@id/bottomBorder"/>
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/googleAdvertisement"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/security_type_label"
-        app:layout_constraintBottom_toTopOf="@id/betweenTimeLineAndSubmitButton"
-        app:layout_constraintEnd_toStartOf="@id/secondLeftBorder"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-7397609705602882/7659433639"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="@id/beforeSecurityType" />
+        app:layout_constraintBottom_toBottomOf="@id/bottomBorder"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

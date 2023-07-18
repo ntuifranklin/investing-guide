@@ -54,7 +54,6 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     private var bw : Int = 0
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var pref : SharedPreferences
-    public lateinit var securityTypes : java.util.ArrayList<String>
     lateinit var securityAdapter : SecurityAdapter
     private lateinit var progressBar: ProgressBar
 
@@ -85,24 +84,33 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         endDate = extras.getString(MainActivity.INTER_ACTIVITY_END_DATE_KEY,"")
         val searchDateFieldNameBy : String = extras.getString(MainActivity.DATE_FIELD_NAME_SEARCH_BY_KEY,MainActivity.DEFAULT_DATE_FIELD_NAME_SEARCH_BY_VALUE)
         searchRoute = extras.getString(MainActivity.SEARCH_ROUTE_KEY,MainActivity.DEFAULT_SEARCH_ROUTE)
-        securityType = extras.getString(MainActivity.SECURITY_TYPE_KEY,MainActivity.DEFAULT_SECURITY_TYPE)
+
 
         // pull data from database and show to user
         dbHandler = DBHandler(this,this)
-        securities = dbHandler.readAllBetween(startDate=startDate,endDate=endDate, dateFieldName = searchDateFieldNameBy)
-
-        if (securities.size > 0 )
+        val count : Int = dbHandler.countMatchingRows(startDate=startDate,endDate=endDate)
+        if (count == 0 ) {
+           dbHandler.getDataOnline()
+        }else{
+            securities = dbHandler.readAllBetween(
+                startDate = startDate,
+                endDate = endDate,
+                dateFieldName = searchDateFieldNameBy
+            )
             displaySecuritiesList(securities)
-
+        }
 
     }
 
-    fun displaySecuritiesList(secs : ArrayList<Security>) {
+    fun displaySecuritiesList(secs : ArrayList<Security> = ArrayList<Security>()) {
         if (secs.size == 0 )
             return
         hideProgressBar()
+
+        securities = secs
         securities_recycler_view = findViewById(R.id.securities_recycler_view)
-        securityAdapter = SecurityAdapter(secs)
+
+        securityAdapter = SecurityAdapter(securities)
 
         securities_recycler_view.adapter = securityAdapter
         securities_recycler_view.layoutManager = LinearLayoutManager(this)
@@ -135,10 +143,7 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
 
             var jsonParser : JsonParser = JsonParser()
             securities = jsonParser.parseString(webResult)
-
-            for (s in securities ) {
-                dbHandler.saveSecurity(s.getCusip(),s.getIssueDate(),s.getAuctionDate(),s.getJsonRawObject())
-            }
+            dbHandler.saveAllSecuritiesAsTransaction(securities)
             val count : Int = dbHandler.getCountAll()
             Log.w(MainActivity.LOG_TAG_EXTERIOR,"Count should be greater than 0 : ${count}")
             hideProgressBar()
