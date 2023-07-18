@@ -207,14 +207,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         Log.w(LOG_TAG_EXTERIOR,"Received From The Internet : ${webResult}")
 
-        //hide progress bar before showing results to user
-        hideProgressBar()
         goToSecuritiesViewActivities()
 
     }
 
 
     fun goToSecuritiesViewActivities( ) {
+
+        //hide progress bar before showing results to user
+        hideProgressBar()
         securitiesViewIntent = Intent( this, SecuritiesViewActivity::class.java )
         startActivity(securitiesViewIntent)
 
