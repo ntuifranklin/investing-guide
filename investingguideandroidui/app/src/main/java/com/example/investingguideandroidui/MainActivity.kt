@@ -73,12 +73,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // set button width at start
 
         setContentView(R.layout.activity_main)
+        createAd()
 
         searchButton = findViewById(R.id.search_treasury_direct)
         searchButton.setOnClickListener(this)
 
         startDatePicker = findViewById(R.id.startDate)
         endDatePicker = findViewById(R.id.endDate)
+
 
     }
 
@@ -156,51 +158,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-
-
-
-
-
-    inner class CustomFragment : Fragment {
-
-        constructor() {
-
-        }
-
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            var frameLayout : FrameLayout = FrameLayout(requireContext())
-
-            return frameLayout
-
-        }
-
-
-    }
-
     fun createAd( ) : Unit {
         var adView : AdView = findViewById<AdView>(R.id.googleAdvertisement)
-        //var adSize : AdSize = AdSize( AdSize.FULL_WIDTH, AdSize.AUTO_HEIGHT)
-        //adView.setAdSize( adSize )
-        adView.setAdSize(AdSize.BANNER);
 
-        var unitId : String = "ca-app-pub-7397609705602882/7659433639"
-        adView.adUnitId = unitId
 
         var adRequestBuilder :AdRequest.Builder = AdRequest.Builder( )
+        /*
         adRequestBuilder.addKeyword("TreasuryDirect")
         adRequestBuilder.addKeyword("Treasury Bond")
         adRequestBuilder.addKeyword("Treasury Bill")
         adRequestBuilder.addKeyword("Treasury TIPS")
         adRequestBuilder.addKeyword("Treasury Bond")
+
+         */
         adRequestBuilder.addKeyword("Bonds")
         adRequestBuilder.addKeyword("Savings")
         adRequestBuilder.addKeyword("Investment")
         adRequestBuilder.addKeyword("Stocks")
         adRequestBuilder.addKeyword("Notes")
+
+
         var adRequest : AdRequest = adRequestBuilder.build()
 
         try {
