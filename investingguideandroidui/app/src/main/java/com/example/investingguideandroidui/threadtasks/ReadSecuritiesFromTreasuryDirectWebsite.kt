@@ -15,20 +15,19 @@ import java.util.*
 
 class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
 
-    private lateinit var fromActivity : MainActivity
+    private lateinit var fromActivity : SecuritiesViewActivity
     private var webResult : String = ""
     private var searchRoute : String = "search"
 
-    constructor(activity: MainActivity, search_route : String = "search") {
+    constructor(activity: SecuritiesViewActivity, search_route : String = MainActivity.DEFAULT_SEARCH_ROUTE) {
         this.fromActivity = activity
-
         searchRoute = search_route
 
     }
 
     override fun run () {
         super.run()
-        var displayTask : ProcesAndViewWebResult = ProcesAndViewWebResult()
+        var parseAndDisplayTask : ProcesAndViewWebResult = ProcesAndViewWebResult()
 
         var tempUrl : String = fromActivity.BASE_URL
 
@@ -47,7 +46,7 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
         // get data from server
         try {
 
-            Log.w(fromActivity.LOG_TAG,webUrl)
+            Log.w(MainActivity.LOG_TAG_EXTERIOR,webUrl)
             val urlObject : URL = URL(webUrl)
             val inputStream: InputStream = urlObject.openStream()
             val scan: Scanner = Scanner(inputStream)
@@ -58,10 +57,11 @@ class ReadSecuritiesFromTreasuryDirectWebsite : Thread {
 
 
         } catch ( e: Exception) {
-            Log.w(fromActivity.LOG_TAG, "Error in Class : ${this.name}, Thread class pulling data from remote server")
+            Log.w(MainActivity.LOG_TAG_EXTERIOR, "Error in Class : ${this.name}, Thread class pulling data from remote server")
 
         }
-        fromActivity.runOnUiThread(displayTask)
+        fromActivity.runOnUiThread(parseAndDisplayTask)
+
 
     }
 

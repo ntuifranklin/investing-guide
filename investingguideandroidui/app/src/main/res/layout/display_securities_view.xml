@@ -14,6 +14,14 @@
         android:text="@string/return_main_activity_button_label"
         android:layout_marginTop="1dp"/>
 
+    <ProgressBar
+        android:id="@+id/loadingDataFromInternetProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/return_search_menu_top_button"
+        android:layout_centerHorizontal="true"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/securities_recycler_view"
         android:layout_width="match_parent"
@@ -22,7 +30,7 @@
         android:visibility="visible"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
-        android:layout_below="@id/return_search_menu_top_button"
+        android:layout_below="@id/loadingDataFromInternetProgressBar"
         />
 
     <Button

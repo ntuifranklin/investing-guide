@@ -8,7 +8,7 @@
     <string name="upcoming_label">Up Coming Auctions</string>
     <string name="search_button_label">Search</string>
     <string name="security_menu_filter_title">Filter Securities To Search</string>
-    <string name="return_main_activity_button_label">Return To Previous Page</string>
+    <string name="return_main_activity_button_label"> &lt;&lt;== Return To Search Menu</string>
     <string name="no_cmb_label">NO CMB FOR THE SELECTED TIMEFRAME</string>
     <string name="no_frn_label">NO FRN FOR THE SELECTED TIMEFRAME</string>
     <string name="no_tips_label">NO TIPS FOR THE SELECTED TIMEFRAME</string>
