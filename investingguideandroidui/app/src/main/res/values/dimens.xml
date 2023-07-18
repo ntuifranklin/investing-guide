@@ -13,13 +13,11 @@
     <dimen name="standard_text_sie">25sp</dimen>
     <dimen name="medium_text_sie">36sp</dimen>
     <dimen name="large_text_sie">46sp</dimen>
-    <dimen name="button_text_size">25sp</dimen>
+    <dimen name="button_text_size">20sp</dimen>
     <dimen name="whole_screen_width">0dp</dimen>
     <dimen name="whole_available_width">0dp</dimen>
     <dimen name="whole_available_height">0dp</dimen>
     <dimen name="available_unit_weight">1.0</dimen>
-
-
 </resources>
 
 

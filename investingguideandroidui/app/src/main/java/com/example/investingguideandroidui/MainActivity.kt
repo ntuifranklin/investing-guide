@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var webResult : String
     private lateinit var securitiesViewIntent : Intent
     private lateinit var securityTypeSpinner : Spinner
+    private lateinit var progressBar: ProgressBar
     /*
     *  Spinner dynamicSpinner = (Spinner) findViewById(R.id.dynamic_spinner);
     * */
@@ -72,6 +73,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // set button width at start
 
         setContentView(R.layout.activity_main)
+
+        //progress bar update
+        progressBar = findViewById(R.id.loadingDataFromInternetProgressBar)
+        hideProgressBar()
+
         securityTypeSpinner = findViewById(R.id.securityTypeSpinner)
         val securityTypes : Array<String> = resources.getStringArray(R.array.security_types)
         var arrayAdatper : ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,securityTypes )
@@ -86,6 +92,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         //retrieve any saved data
 
 
+    }
+
+    fun hideProgressBar() {
+        if (progressBar != null ) {
+            progressBar.visibility = View.INVISIBLE
+        }
+
+    }
+
+    fun showProgressBar() {
+
+        if (progressBar != null ) {
+            progressBar.visibility = View.VISIBLE
+        }
     }
 
     fun loadSavedResult() {
@@ -140,6 +160,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var stxtv : TextView = securityTypeSpinner.selectedView as TextView
         securityType = stxtv.text.toString()
 
+        // show progres bar
+        showProgressBar()
 
         var taskThread : ReadSecuritiesFromTreasuryDirectWebsite =
             ReadSecuritiesFromTreasuryDirectWebsite(this, search_route=searchRoute)
@@ -184,6 +206,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
         Log.w(LOG_TAG_EXTERIOR,"Received From The Internet : ${webResult}")
+
+        //hide progress bar before showing results to user
+        hideProgressBar()
         goToSecuritiesViewActivities()
 
     }
