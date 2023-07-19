@@ -1,13 +1,14 @@
 # investing-guide
 
 # versions
-|      Version 1            |      Version 2            |      Version 3            |      Version 4            | 
-|---------------------------|---------------------------|---------------------------|---------------------------|
-| <img src="./imgs/a.gif">  | <img src="./imgs/b.gif">  | <img src="./imgs/c.gif"> |  <img src="./imgs/d.gif">  |  
+|      Version 6            |     Version 5            |      Version 4            |
+|---------------------------|--------------------------|---------------------------|
+| <img src="./imgs/f.gif">  | <img src="./imgs/e.gif"> | <img src="./imgs/d.gif">  |
 
-|      Version 5            |   
-|---------------------------|
-| <img src="./imgs/e.gif">  | 
+|      Version 3            |      Version 2            |       Version 1           |  
+|---------------------------|---------------------------|---------------------------|
+|  <img src="./imgs/c.gif"> |  <img src="./imgs/b.gif"> | <img src="./imgs/a.gif">  | 
+
 
 
 Android app that helps see what treasury security bills are available for sale.  
