@@ -120,24 +120,20 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
 
 
     fun hideProgressBar() {
-        if (progressBar != null ) {
-            progressBar.visibility = View.GONE
-        }
+        progressBar.visibility = View.GONE
 
     }
 
     fun showProgressBar() {
 
-        if (progressBar != null ) {
-            progressBar.visibility = View.INVISIBLE
-            progressBar.visibility = View.VISIBLE
-        }
+        progressBar.visibility = View.INVISIBLE
+        progressBar.visibility = View.VISIBLE
     }
 
 
     fun saveWebResult(webResult : String ) {
         showProgressBar()
-        if ( webResult == null && webResult.length == 0)
+        if ( webResult == null || webResult.length == 0)
             return
         try {
 

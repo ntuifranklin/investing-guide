@@ -14,8 +14,8 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="SecurityCardView" >
-        <item name="cornerRadius">20dp</item>
-        <item name="cardElevation">20dp</item>
+        <item name="cornerRadius">6dp</item>
+        <item name="cardElevation">10dp</item>
         <item name="cardBackgroundColor">@color/cardview_dark_background</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>

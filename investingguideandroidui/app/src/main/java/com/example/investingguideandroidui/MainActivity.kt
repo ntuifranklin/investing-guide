@@ -57,16 +57,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // set button width at start
 
         setContentView(R.layout.activity_main)
-        createAd()
+
         searchButton = findViewById(R.id.search_treasury_direct)
         searchButton.setOnClickListener(this)
         startDatePicker = findViewById(R.id.startDate)
         endDatePicker = findViewById(R.id.endDate)
-
-
+        createAd()
     }
-
-
 
     override fun onClick(view: View?) {
         if (view != null && view == searchButton ) {
@@ -138,21 +135,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
         val adRequestBuilder :AdRequest.Builder = AdRequest.Builder( )
-        /*
-        adRequestBuilder.addKeyword("TreasuryDirect")
-        adRequestBuilder.addKeyword("Treasury Bond")
-        adRequestBuilder.addKeyword("Treasury Bill")
-        adRequestBuilder.addKeyword("Treasury TIPS")
-        adRequestBuilder.addKeyword("Treasury Bond")
-
-         */
-        adRequestBuilder.addKeyword("Bonds")
-        adRequestBuilder.addKeyword("Savings")
-        adRequestBuilder.addKeyword("Investment")
-        adRequestBuilder.addKeyword("Stocks")
-        adRequestBuilder.addKeyword("Notes")
-
-
         var adRequest : AdRequest = adRequestBuilder.build()
 
         try {

@@ -223,11 +223,11 @@ class DBHandler  : SQLiteOpenHelper{
 
                 var security: Security = Security()
                 //security.parseJsonObject()
-                security.setCusip(cursorSecurity.getString(0))
-                security.setSecurityType(cursorSecurity.getString(1))
-                security.setIssueDate(cursorSecurity.getString(2))
-                security.setAuctionDate(cursorSecurity.getString(3))
-                security.setJsonRawObject(cursorSecurity.getString(4))
+                security.setCusip(cursorSecurity.getString(1))
+                security.setSecurityType(cursorSecurity.getString(2))
+                security.setIssueDate(cursorSecurity.getString(3))
+                security.setAuctionDate(cursorSecurity.getString(4))
+                security.setJsonRawObject(cursorSecurity.getString(5))
                 secures.add(security)
             } while (cursorSecurity.moveToNext())
             // moving our cursor to next.

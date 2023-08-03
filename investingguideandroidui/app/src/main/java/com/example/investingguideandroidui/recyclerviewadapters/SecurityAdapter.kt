@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.R
@@ -14,7 +15,7 @@ import java.util.*
 
 
 class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
-    lateinit var securities : ArrayList<Security>
+    var securities : ArrayList<Security>
 
     constructor(securities : ArrayList<Security>) {
 
@@ -43,13 +44,11 @@ class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val security : Security = securities[position]
-        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"item onBindViewHolder ${security.toString()}")
         holder.issueDate.text = "Issue Date : " + security.getIssueDate()
         holder.cusipTv.text =  "CUSIP : " + security.getCusip()
         holder.securityType.text =  "Security Type : " + security.getSecurityType()
         holder.auctionDate.text =  "Auction Date : " +security.getAuctionDate()
-        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"In SecurityAdapter: size of securities : ${securities.size}")
+
     }
 }
