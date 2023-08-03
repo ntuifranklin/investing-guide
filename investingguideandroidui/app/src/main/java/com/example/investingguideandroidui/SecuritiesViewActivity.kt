@@ -56,6 +56,9 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var pref : SharedPreferences
     lateinit var securityAdapter : SecurityAdapter
     private lateinit var progressBar: ProgressBar
+    private lateinit var btnTop: Button
+    private lateinit var btnBottom: Button
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,9 +72,9 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         //set behavior of buttons top and bottom
 
         setContentView(R.layout.display_securities_view)
-        var btnTop : Button = findViewById<Button>(R.id.return_search_menu_top_button)
+        btnTop = findViewById<Button>(R.id.return_search_menu_top_button)
 
-        var btnBottom : Button = findViewById<Button>(R.id.return_search_menu_bottom_button)
+        btnBottom  = findViewById<Button>(R.id.return_search_menu_bottom_button)
         btnTop.setOnClickListener(this)
         btnBottom.setOnClickListener(this)
 
@@ -110,7 +113,7 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         securities = secs
         securities_recycler_view = findViewById(R.id.securities_recycler_view)
 
-        securityAdapter = SecurityAdapter(securities)
+        securityAdapter = SecurityAdapter(securities, this)
 
         securities_recycler_view.adapter = securityAdapter
         securities_recycler_view.layoutManager = LinearLayoutManager(this)
@@ -152,7 +155,11 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         if( view == null )
             return
 
-        finish()
+        if (view == btnTop || view == btnBottom) {
+            finish()
+            return
+        }
+
     }
 
 

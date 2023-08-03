@@ -15,6 +15,7 @@ class Security {
     private var pricePerDay : Double = 0.0
     private var securityTerm : String = "0-Week"
     private var auctionDate : String = ""
+    private var maturityDate : String = ""
 
 
     constructor() : this("1970-01-01", 99.65, "{}") {
@@ -48,6 +49,11 @@ class Security {
         jsonRawObject = rawJson
     }
 
+    fun setMaturityDate(mDate: String){
+        maturityDate = mDate
+
+    }
+
     fun parseJsonObject() {
         if (jsonRawObject == null )
             return
@@ -66,11 +72,14 @@ class Security {
             setIssueDate(securityObject.getString("issueDate"))
             setAuctionDate(securityObject.getString("auctionDate"))
             setCusip(securityObject.getString("cusip"))
+            setMaturityDate(securityObject.getString("maturityDate"))
 
         } catch (e : JSONException ){
             Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error in Class : Security : ${e.printStackTrace()}")
         }
     }
+
+
     fun setIssueDate(issueDate: String ) {
         this.issueDate = issueDate
     }
@@ -119,6 +128,9 @@ class Security {
         return this.auctionDate
     }
 
+    fun getMaturityDate() : String {
+        return maturityDate
+    }
     fun getPricePer100() : Double  {
        return pricePer100
     }

@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         searchButton.setOnClickListener(this)
         startDatePicker = findViewById(R.id.startDate)
         endDatePicker = findViewById(R.id.endDate)
-        createAd()
+        //createAd()
     }
 
     override fun onClick(view: View?) {

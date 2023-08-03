@@ -187,7 +187,7 @@ class DBHandler  : SQLiteOpenHelper{
                     + ")"
                 +" ")
 
-        Log.w(MainActivity.LOG_TAG_EXTERIOR,"running count sql : $dateMatchesSql")
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"running count sql : $dateMatchesSql")
         val countSql : String = dateMatchesSql!!
         var cursorCount : Cursor = db.rawQuery(countSql, null)
         var c : Int = 0
@@ -213,7 +213,7 @@ class DBHandler  : SQLiteOpenHelper{
                 + " strftime('%Y-%m-%d', $dateFieldName) <= strftime('%Y-%m-%d', '$endDate') "
                 + ")"
                 +" ")
-        Log.w(MainActivity.LOG_TAG_EXTERIOR,"Running sql : $timeBoundSql ")
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"Running sql : $timeBoundSql ")
 
         var cursorSecurity : Cursor = db.rawQuery(timeBoundSql, null)
 
@@ -228,6 +228,7 @@ class DBHandler  : SQLiteOpenHelper{
                 security.setIssueDate(cursorSecurity.getString(3))
                 security.setAuctionDate(cursorSecurity.getString(4))
                 security.setJsonRawObject(cursorSecurity.getString(5))
+                security.parseJsonObject()
                 secures.add(security)
             } while (cursorSecurity.moveToNext())
             // moving our cursor to next.
@@ -271,7 +272,6 @@ class DBHandler  : SQLiteOpenHelper{
 
         // below variable is for our security json data
         public const val SECURITY_JSON_DATA = "jsonData"
-
 
     }
 }
