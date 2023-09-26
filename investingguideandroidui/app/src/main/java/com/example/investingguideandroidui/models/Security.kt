@@ -1,9 +1,11 @@
 package com.example.investingguideandroidui.models
 import android.util.Log
 import com.example.investingguideandroidui.MainActivity
+import com.example.investingguideandroidui.database.DBHandler
 import com.example.investingguideandroidui.utilities.SecurityTermToDays
 import org.json.JSONException
 import org.json.JSONObject
+
 
 class Security {
     private lateinit var jsonRawObject : String
@@ -16,6 +18,7 @@ class Security {
     private var securityTerm : String = "0-Week"
     private var auctionDate : String = ""
     private var maturityDate : String = ""
+    private var generatedSecurityUUID : String = ""
 
 
     constructor() : this("1970-01-01", 99.65, "{}") {
@@ -30,6 +33,9 @@ class Security {
         pricePerDay = 0.0
     }
 
+    fun setGeneratedSecurityUUID(uuid: String) {
+        generatedSecurityUUID = uuid
+    }
 
     fun setSecurityType(securityType: String){
         this.securityType = securityType
@@ -59,20 +65,23 @@ class Security {
             return
 
         try {
+
             var securityObject : JSONObject = JSONObject(jsonRawObject)
 
 
-            var st : String = securityObject.getString("securityType")
+            var st : String = securityObject.getString(DBHandler.SECURITY_TYPE_COL)
             setSecurityType(st)
-            var pp100: String = securityObject.getString("pricePer100")
+            var pp100: String = securityObject.getString(DBHandler.PRICE_PER_100_COL)
             if (pp100 != null && pp100.length > 0 )
                 setPricePer100(pp100.toDouble())
             else
                 setPricePer100(0.0)
-            setIssueDate(securityObject.getString("issueDate"))
-            setAuctionDate(securityObject.getString("auctionDate"))
-            setCusip(securityObject.getString("cusip"))
-            setMaturityDate(securityObject.getString("maturityDate"))
+
+            setIssueDate(securityObject.getString(DBHandler.ISSUE_DATE_COL))
+            setAuctionDate(securityObject.getString(DBHandler.AUCTION_DATE_COL))
+            setCusip(securityObject.getString(DBHandler.CUSIP_COL))
+            setMaturityDate(securityObject.getString(DBHandler.MATURITY_DATE_COL))
+
 
         } catch (e : JSONException ){
             Log.w(MainActivity.LOG_TAG_EXTERIOR,"Error in Class : Security : ${e.printStackTrace()}")
@@ -111,6 +120,9 @@ class Security {
         }
     }
 
+    fun getGeneratedSecurityUUID() : String {
+        return generatedSecurityUUID
+    }
 
     fun getSecurityType() : String {
         return securityType

@@ -20,7 +20,6 @@ class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
     var activityListener : SecuritiesViewActivity
 
     constructor(securities : ArrayList<Security>, activityListener : SecuritiesViewActivity) {
-
         this.securities = securities
         this.activityListener = activityListener
     }
@@ -29,18 +28,20 @@ class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
 
         val cusipTv = itemView.findViewById<TextView>(R.id.cusip)
         val securityType = itemView.findViewById<TextView>(R.id.securityType)
-
         val issueDate = itemView.findViewById<TextView>(R.id.issueDate)
         val auctionDate = itemView.findViewById<TextView>(R.id.auctionDate)
         val maturityDate = itemView.findViewById<TextView>(R.id.maturityDate)
+        val generatedSecurityview = itemView.findViewById<TextView>(R.id.generatedSecurityUUID)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        var view = LayoutInflater.from(parent.context)
             .inflate(R.layout.security_card_view, parent, false)
         view.setOnClickListener(activityListener)
-        return ViewHolder(view)
+        view.setOnTouchListener(activityListener)
+        val v: View = view
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
@@ -55,6 +56,7 @@ class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
         holder.securityType.text =  "Security Type : " + security.getSecurityType()
         holder.auctionDate.text =  "Auction Date : " +security.getAuctionDate()
         holder.maturityDate.text = "Maturity Date : " + security.getMaturityDate()
+        holder.generatedSecurityview.text = security.getGeneratedSecurityUUID()
 
     }
 }

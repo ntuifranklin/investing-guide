@@ -1,11 +1,11 @@
 package com.example.investingguideandroidui.utilities
-
 import android.util.Log
 import com.example.investingguideandroidui.MainActivity
 import org.json.JSONArray
 import org.json.JSONObject
 import com.example.investingguideandroidui.models.Security
 import org.json.JSONException
+import java.util.ArrayList
 
 class JsonParser {
     private var webResult : String = ""
@@ -29,7 +29,9 @@ class JsonParser {
                //Log.w(MainActivity.LOG_TAG_EXTERIOR,"security object : $securityObject ")
                var security: Security = Security()
                security.setJsonRawObject(jsonArray.optString(index, "{}"))
-               var st : String = securityObject.getString("securityType")
+               security.parseJsonObject()
+               /*
+               * var st : String = securityObject.getString("securityType")
                security.setSecurityType(st)
                var pp100: String = securityObject.getString("pricePer100")
                if (pp100 != null && pp100.length > 0 )
@@ -40,6 +42,7 @@ class JsonParser {
                security.setCusip(securityObject.getString("cusip"))
 
                security.setAuctionDate(securityObject.getString("auctionDate"))
+               * */
                securities.add(security)
 
            } catch (e : JSONException) {

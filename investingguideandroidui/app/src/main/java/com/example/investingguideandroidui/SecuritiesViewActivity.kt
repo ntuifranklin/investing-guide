@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,7 @@ import org.json.JSONException
 import java.util.*
 
 
-class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
+class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener, View.OnTouchListener {
 
     lateinit var startDate : String
     lateinit var endDate : String
@@ -159,7 +160,21 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
             finish()
             return
         }
+    }
 
+    override fun onTouch(view: View?, event: MotionEvent?): Boolean {
+        if (view == null || event == null )
+            return false
+
+        val action = event.action
+
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Generated UUID: ${view.id}")
+
+
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Card clicked upon")
+
+
+        return true
     }
 
 

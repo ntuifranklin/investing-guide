@@ -72,6 +72,15 @@
                     android:text=""
                     />
             </TableRow>
+            <TableRow>
+            <TextView
+                android:id="@+id/generatedSecurityUUID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UniqueSystemID"
+
+                />
+        </TableRow>
         </TableLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
