@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/inter_row_margin_top"
+            android:layout_marginBottom="@dimen/inter_row_margin_top"
             android:layout_marginLeft="@dimen/left_right_margin_column"
             android:orientation="horizontal">
             <TableRow
@@ -71,6 +72,15 @@
                     android:text=""
                     />
             </TableRow>
+            <TableRow>
+            <TextView
+                android:id="@+id/generatedSecurityUUID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UniqueSystemID"
+
+                />
+        </TableRow>
         </TableLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

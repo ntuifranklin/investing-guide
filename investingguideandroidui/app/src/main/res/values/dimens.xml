@@ -7,7 +7,7 @@
     <dimen name="search_menu_button_width">150sp</dimen>
     <dimen name="search_menu_button_height">70sp</dimen>
     <dimen name="datePickerLabelWidth">150sp</dimen>
-    <dimen name="inter_row_margin_top">4dp</dimen>
+    <dimen name="inter_row_margin_top">6dp</dimen>
     <dimen name="left_right_margin_column">12dp</dimen>
 
     <dimen name="standard_text_sie">25sp</dimen>

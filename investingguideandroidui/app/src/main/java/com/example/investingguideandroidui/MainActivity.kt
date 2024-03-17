@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         searchButton.setOnClickListener(this)
         startDatePicker = findViewById(R.id.startDate)
         endDatePicker = findViewById(R.id.endDate)
-        createAd()
+        //createAd()
     }
 
     override fun onClick(view: View?) {
@@ -88,13 +88,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         startDate = formatter.format(formatter.parse(startDate)!!)
         endDate = formatter.format(formatter.parse(endDate)!!)
 
-
-
-        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"start date : ${startDate} end date : ${endDate}")
-
         val auctionOrSearchBtn : RadioGroup = findViewById(R.id.auctionOrSearch)
-
-
         val checkedButtonId : Int = auctionOrSearchBtn.checkedRadioButtonId
         val btnChecked : Button = findViewById(checkedButtonId)
 
@@ -106,42 +100,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         else if (btnChecked.id == R.id.upComingChecked){
             dateFieldName = issueDateFieldName
             searchRoute = DEFAULT_SEARCH_ROUTE
-
         }
+
         securitiesViewIntent = Intent( this, SecuritiesViewActivity::class.java )
         securitiesViewIntent.putExtra(INTER_ACTIVITY_START_DATE_KEY,startDate)
         securitiesViewIntent.putExtra(INTER_ACTIVITY_END_DATE_KEY,endDate)
         securitiesViewIntent.putExtra(DATE_FIELD_NAME_SEARCH_BY_KEY,dateFieldName)
         securitiesViewIntent.putExtra(SEARCH_ROUTE_KEY, searchRoute)
-
         startActivity(securitiesViewIntent)
-
-
     }
 
     fun test(title : String = "Testing "){
 
         val t : String = LOG_TAG_EXTERIOR!!
-
         Log.w(t, "########### Testing : $title ############## ")
-
-
         Log.w(t, "########### End of Testing ############## ")
 
-    }
-
-    fun createAd( ) {
-        val adView : AdView = findViewById<AdView>(R.id.googleAdvertisement)
-
-
-        val adRequestBuilder :AdRequest.Builder = AdRequest.Builder( )
-        var adRequest : AdRequest = adRequestBuilder.build()
-
-        try {
-            adView.loadAd(adRequest)
-        } catch( e : Exception) {
-            Log.w(LOG_TAG_EXTERIOR, "Error loading the google ad")
-        }
     }
 
 
@@ -163,7 +137,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         const val DEFAULT_SEARCH_ROUTE : String = "search"
         const val SEARCH_ROUTE_KEY : String = "searchRoute"
         const val WEB_RESULT_KEY : String = "webResult"
-        const val APP_UNIQUE_ID : String = "cbhsuisnzdfui2378348347647641edsjhsh"
+        const val APP_UNIQUE_ID : String = "CKT/D9lu/77DT02NSRSIb0O2BnakW2vXc4jWf7zfyEZByjT9ZsGhnIqjDXeAV2Mg" +
+                "I2ZfiGKK8Vja6IqPJzP61FbngafLPcH942E44uA8VbQoHat8/sxDTj09FM43ZTuV" +
+                "KaCGgw"
         const val INTER_ACTIVITY_START_DATE_KEY = "startDate"
         const val INTER_ACTIVITY_END_DATE_KEY = "endDate"
 

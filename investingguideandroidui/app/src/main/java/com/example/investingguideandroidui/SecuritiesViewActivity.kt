@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,7 @@ import org.json.JSONException
 import java.util.*
 
 
-class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
+class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener, View.OnTouchListener {
 
     lateinit var startDate : String
     lateinit var endDate : String
@@ -56,6 +57,9 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var pref : SharedPreferences
     lateinit var securityAdapter : SecurityAdapter
     private lateinit var progressBar: ProgressBar
+    private lateinit var btnTop: Button
+    private lateinit var btnBottom: Button
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,9 +73,9 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         //set behavior of buttons top and bottom
 
         setContentView(R.layout.display_securities_view)
-        var btnTop : Button = findViewById<Button>(R.id.return_search_menu_top_button)
+        btnTop = findViewById<Button>(R.id.return_search_menu_top_button)
 
-        var btnBottom : Button = findViewById<Button>(R.id.return_search_menu_bottom_button)
+        btnBottom  = findViewById<Button>(R.id.return_search_menu_bottom_button)
         btnTop.setOnClickListener(this)
         btnBottom.setOnClickListener(this)
 
@@ -110,7 +114,7 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         securities = secs
         securities_recycler_view = findViewById(R.id.securities_recycler_view)
 
-        securityAdapter = SecurityAdapter(securities)
+        securityAdapter = SecurityAdapter(securities, this)
 
         securities_recycler_view.adapter = securityAdapter
         securities_recycler_view.layoutManager = LinearLayoutManager(this)
@@ -152,7 +156,32 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener {
         if( view == null )
             return
 
-        finish()
+
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Generated UUID: ${view.id}")
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Card clicked upon")
+
+        if (view == btnTop || view == btnBottom) {
+            finish()
+            return
+        }
+
+
+
+    }
+
+    override fun onTouch(view: View?, event: MotionEvent?): Boolean {
+        if (view == null || event == null )
+            return false
+
+        val action = event.action
+
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Generated UUID: ${view.id}")
+
+
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Card clicked upon")
+
+
+        return true
     }
 
 

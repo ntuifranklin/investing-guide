@@ -4,8 +4,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
-import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import com.example.investingguideandroidui.threadtasks.ReadSecuritiesFromTreasuryDirectWebsite
@@ -30,23 +28,35 @@ class DBHandler  : SQLiteOpenHelper{
         //create security table
 
         val query_security = ("CREATE TABLE IF NOT EXISTS $SECURITY_TABLE_NAME ("
-                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + CUSIP_COL + " TEXT, "
-                + SECURITY_TYPE_COL + " TEXT, "
+                + ID_COL + " CHAR(50) PRIMARY KEY, "
+                + CUSIP_COL + " CHAR(30), "
+                + SECURITY_TYPE_COL + " CHAR(20), "
                 + ISSUE_DATE_COL + " DATE, "
                 + AUCTION_DATE_COL + " DATE, "
                 + SECURITY_JSON_DATA + " TEXT)")
-
-        // at last we are calling a exec sql
-        // method to execute above sql query
         db.execSQL(query_security)
+    }
 
+    fun getUniqueUUID() : String {
+
+        var myUuid : UUID = UUID.randomUUID()
+        var myUuidAsString : String  = myUuid.toString()
+        var  c = 1
+        while ( c > 0) {
+            c = getCount(myUuidAsString, ID_COL)
+            if ( c == 0) break
+            myUuid = UUID.randomUUID()
+            myUuidAsString = myUuid.toString()
+
+        }
+
+        return myUuidAsString
     }
 
     // this method is use to add new security to our sqlite database.
     fun saveSecurity(
         cusip: String,
-        securityTye : String,
+        securityType : String,
         issueDate: String,
         auctionDate: String,
         jsonData: String?
@@ -60,8 +70,10 @@ class DBHandler  : SQLiteOpenHelper{
         // on below line we are creating a
         // variable for content values.
         val values = ContentValues()
+        val newUUID : String = getUniqueUUID()
+        values.put(ID_COL, newUUID)
         values.put(CUSIP_COL, cusip)
-        values.put(SECURITY_TYPE_COL, securityTye)
+        values.put(SECURITY_TYPE_COL, securityType)
         values.put(ISSUE_DATE_COL, issueDate)
         values.put(AUCTION_DATE_COL, auctionDate)
         values.put(SECURITY_JSON_DATA, jsonData)
@@ -83,7 +95,7 @@ class DBHandler  : SQLiteOpenHelper{
         onCreate(db)
     }
 
-    fun getCount(fieldValue: String, fieldName: String = CUSIP_COL) : Int {
+    fun getCount(fieldValue: String = "", fieldName: String = CUSIP_COL) : Int {
         var c : Int = 0
 
         val db = this.readableDatabase
@@ -128,22 +140,20 @@ class DBHandler  : SQLiteOpenHelper{
 
         val db = this.writableDatabase
 
-        //db.beginTransaction()
-        for (s in secs ) {
 
+        for (s in secs ) {
             // on below line we are creating a
             // variable for content values.
-            val values = ContentValues()
-            values.put(CUSIP_COL, s.getCusip())
-            values.put(SECURITY_TYPE_COL, s.getSecurityType())
-            values.put(ISSUE_DATE_COL, s.getIssueDate())
-            values.put(AUCTION_DATE_COL, s.getAuctionDate())
-            values.put(SECURITY_JSON_DATA, s.getJsonRawObject())
-
-            db.insert("`$SECURITY_TABLE_NAME`", null, values)
+            this.saveSecurity(
+                s.getCusip(),
+                s.getSecurityType(),
+                s.getIssueDate(),
+                s.getAuctionDate(),
+                s.getJsonRawObject()
+            )
 
         }
-        //db.endTransaction()
+
 
     }
     fun readAll() : ArrayList<Security> {
@@ -187,7 +197,7 @@ class DBHandler  : SQLiteOpenHelper{
                     + ")"
                 +" ")
 
-        Log.w(MainActivity.LOG_TAG_EXTERIOR,"running count sql : $dateMatchesSql")
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"running count sql : $dateMatchesSql")
         val countSql : String = dateMatchesSql!!
         var cursorCount : Cursor = db.rawQuery(countSql, null)
         var c : Int = 0
@@ -213,7 +223,7 @@ class DBHandler  : SQLiteOpenHelper{
                 + " strftime('%Y-%m-%d', $dateFieldName) <= strftime('%Y-%m-%d', '$endDate') "
                 + ")"
                 +" ")
-        Log.w(MainActivity.LOG_TAG_EXTERIOR,"Running sql : $timeBoundSql ")
+        //Log.w(MainActivity.LOG_TAG_EXTERIOR,"Running sql : $timeBoundSql ")
 
         var cursorSecurity : Cursor = db.rawQuery(timeBoundSql, null)
 
@@ -222,12 +232,13 @@ class DBHandler  : SQLiteOpenHelper{
                 // on below line we are adding the data from cursor to our array list.
 
                 var security: Security = Security()
-                //security.parseJsonObject()
-                security.setCusip(cursorSecurity.getString(1))
-                security.setSecurityType(cursorSecurity.getString(2))
-                security.setIssueDate(cursorSecurity.getString(3))
-                security.setAuctionDate(cursorSecurity.getString(4))
-                security.setJsonRawObject(cursorSecurity.getString(5))
+                security.setGeneratedSecurityUUID(cursorSecurity.getString(1))
+                security.setCusip(cursorSecurity.getString(2))
+                security.setSecurityType(cursorSecurity.getString(3))
+                security.setIssueDate(cursorSecurity.getString(4))
+                security.setAuctionDate(cursorSecurity.getString(5))
+                security.setJsonRawObject(cursorSecurity.getString(6))
+                security.parseJsonObject()
                 secures.add(security)
             } while (cursorSecurity.moveToNext())
             // moving our cursor to next.
@@ -245,17 +256,21 @@ class DBHandler  : SQLiteOpenHelper{
     companion object {
         // creating a constant variables for our database.
         // below variable is for our database name.
-        private const val DB_NAME = "securities.db"
+        private const val DB_NAME = "securitiesDb12012.db"
 
         // below int is our database version
-        private const val DB_VERSION = 2
+        private const val DB_VERSION = 3
 
         // below variable is for our table name.
         private const val SECURITY_TABLE_NAME = "Securities"
 
 
         // below variable is for our id column in security table.
-        private const val ID_COL = "id"
+        public const val ID_COL = "generatedSecurityUUID"
+
+        public const val PRICE_PER_100_COL = "pricePer100"
+
+        public const val MATURITY_DATE_COL = "maturityDate"
 
         // below variable id for our security cusip.
         public const val CUSIP_COL = "cusip"
@@ -268,10 +283,8 @@ class DBHandler  : SQLiteOpenHelper{
         // for the auction date
         public const val AUCTION_DATE_COL = "auctionDate"
 
-
         // below variable is for our security json data
         public const val SECURITY_JSON_DATA = "jsonData"
-
 
     }
 }

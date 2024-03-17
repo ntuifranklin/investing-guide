@@ -10,32 +10,38 @@ import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.example.investingguideandroidui.MainActivity
 import com.example.investingguideandroidui.R
+import com.example.investingguideandroidui.SecuritiesViewActivity
 import com.example.investingguideandroidui.models.Security
 import java.util.*
 
 
 class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
     var securities : ArrayList<Security>
+    var activityListener : SecuritiesViewActivity
 
-    constructor(securities : ArrayList<Security>) {
-
+    constructor(securities : ArrayList<Security>, activityListener : SecuritiesViewActivity) {
         this.securities = securities
+        this.activityListener = activityListener
     }
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
         val cusipTv = itemView.findViewById<TextView>(R.id.cusip)
         val securityType = itemView.findViewById<TextView>(R.id.securityType)
-
         val issueDate = itemView.findViewById<TextView>(R.id.issueDate)
         val auctionDate = itemView.findViewById<TextView>(R.id.auctionDate)
+        val maturityDate = itemView.findViewById<TextView>(R.id.maturityDate)
+        val generatedSecurityview = itemView.findViewById<TextView>(R.id.generatedSecurityUUID)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        var view = LayoutInflater.from(parent.context)
             .inflate(R.layout.security_card_view, parent, false)
-        return ViewHolder(view)
+        view.setOnClickListener(activityListener)
+        view.setOnTouchListener(activityListener)
+        val v: View = view
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
@@ -49,6 +55,8 @@ class SecurityAdapter : RecyclerView.Adapter<SecurityAdapter.ViewHolder> {
         holder.cusipTv.text =  "CUSIP : " + security.getCusip()
         holder.securityType.text =  "Security Type : " + security.getSecurityType()
         holder.auctionDate.text =  "Auction Date : " +security.getAuctionDate()
+        holder.maturityDate.text = "Maturity Date : " + security.getMaturityDate()
+        holder.generatedSecurityview.text = security.getGeneratedSecurityUUID()
 
     }
 }
