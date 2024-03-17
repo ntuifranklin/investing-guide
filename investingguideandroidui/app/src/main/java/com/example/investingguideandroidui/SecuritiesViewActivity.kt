@@ -156,10 +156,17 @@ class SecuritiesViewActivity : AppCompatActivity(), View.OnClickListener, View.O
         if( view == null )
             return
 
+
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Generated UUID: ${view.id}")
+        Log.w(MainActivity.LOG_TAG_EXTERIOR, "Card clicked upon")
+
         if (view == btnTop || view == btnBottom) {
             finish()
             return
         }
+
+
+
     }
 
     override fun onTouch(view: View?, event: MotionEvent?): Boolean {

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.investingguideandroidui'
+    namespace 'com.example.investingguideuiandroid'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.investingguideandroidui"
+        applicationId "com.example.investingguideuiandroid"
         minSdk 22
         targetSdk 33
         versionCode 1
@@ -20,8 +20,14 @@ android {
 
     buildTypes {
         release {
+            buildConfigField "Boolean", "DEBUG_MODE", "false"
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            buildConfigField "Boolean", "DEBUG_MODE", "true"
         }
     }
     compileOptions {
